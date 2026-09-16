@@ -1,0 +1,115 @@
+---
+// PLACEHOLDER: this is where the keyboard lands in step 2.
+const keys = [
+  { k: 'A', label: 'about' },
+  { k: 'P', label: 'projects' },
+  { k: 'S', label: 'skills' },
+  { k: 'W', label: 'writing' },
+  { k: 'E', label: 'experience' },
+  { k: 'C', label: 'contact' },
+];
+---
+
+<section id="next" class="next" aria-labelledby="next-title">
+  <p class="eyebrow">chapter 02 · under construction</p>
+  <h2 id="next-title">the keyboard</h2>
+  <p class="lede">
+    Chunky keys, tiny plants, and every part of this portfolio one keypress away. The square windows from the collage fall
+    down here and become the keys.
+  </p>
+  <ul class="ghost" aria-label="Sections planned for the keyboard">
+    {
+      keys.map(({ k, label }) => (
+        <li>
+          <span class="ghost__key" aria-hidden="true">{k}</span>
+          <span class="ghost__label">{label}</span>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="todo">placeholder: built after the landing page feels right</p>
+</section>
+
+<style>
+  .next {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding: clamp(72px, 12vw, 140px) var(--gutter) clamp(80px, 12vw, 150px);
+    border-top: var(--line) solid var(--ink);
+    background-color: var(--blue);
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.18) 1.5px, transparent 1.5px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.18) 1.5px, transparent 1.5px);
+    background-size: 36px 36px;
+    text-align: center;
+  }
+
+  .eyebrow,
+  .todo {
+    margin: 0;
+    font: 400 11px/1.4 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 14px 0 0;
+    font: 400 clamp(56px, 9vw, 120px) / 0.9 var(--font-display);
+    color: var(--cream);
+    -webkit-text-stroke: 0.06em var(--ink);
+    paint-order: stroke fill;
+    text-shadow: 0.04em 0.05em 0 var(--ink);
+  }
+
+  .lede {
+    max-width: 44ch;
+    margin: 22px 0 0;
+    font-size: clamp(17px, 1.6vw, 20px);
+  }
+
+  .ghost {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    gap: clamp(10px, 2vw, 22px);
+    margin: 44px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ghost li {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+  }
+
+  .ghost__key {
+    display: grid;
+    place-items: center;
+    width: clamp(52px, 7vw, 84px);
+    aspect-ratio: 1;
+    border: 3px dashed var(--ink);
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.28);
+    font: 400 clamp(22px, 2.6vw, 32px) / 1 var(--font-display);
+  }
+
+  .ghost__label {
+    font: 400 10px/1 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  .todo {
+    margin-top: 40px;
+    padding: 8px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    background: var(--yellow);
+  }
+
+  @media (max-width: 599px) {
+    .ghost {
+      grid-template-columns: repeat(3, auto);
+    }
+  }
+</style>

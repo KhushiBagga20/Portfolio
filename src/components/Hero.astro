@@ -1,0 +1,564 @@
+---
+import Collage from './Collage.astro';
+import Doodle from './Doodle.astro';
+import { site } from '../data/site';
+
+const [first, ...rest] = site.headline.split(', ');
+---
+
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <div class="stage" data-stage data-act="1">
+    <div class="copy">
+      <div class="copy__top">
+        <p class="hello" aria-hidden="true">{site.hello}</p>
+        <h1 id="hero-title" class="name">
+          <span class="name__word" aria-hidden="true">
+            {[...site.name.toUpperCase()].map((ch, i) => <span class="name__letter" style={`--i:${i}`}>{ch}</span>)}
+          </span>
+          <span class="sr-only">{site.name} ({site.fullName})</span>
+        </h1>
+      </div>
+
+      <div class="copy__bottom">
+        <p class="aka"><span class="aka__tag">aka</span> {site.fullName}<span class="aka__role"><span class="aka__dot"> · </span>{site.role}</span></p>
+        <p class="headline">{first},<br /><mark>{rest.join(', ')}</mark></p>
+        <p class="intro">{site.intro}</p>
+        <div class="cta">
+          <span class="cta__main">
+            <a class="key key--pink" href="#next">see my work <span aria-hidden="true">↓</span></a>
+            <span class="sticker s-cursor"><Doodle kind="cursor" color="var(--cream)" /></span>
+          </span>
+          <a class="key" href="#next">say hi</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="art">
+      <p class="captions" aria-hidden="true">
+        <span data-caption="1">me, drawn</span>
+        <span data-caption="2">me, for real</span>
+        <span data-caption="3">(usually both at once)</span>
+        <span class="captions__arrow"><Doodle kind="arrow" color="var(--ink)" /></span>
+      </p>
+
+      <Collage />
+
+      <span class="sticker s-star" style="--d:1.4"><Doodle kind="star" color="var(--yellow)" seed={7} /></span>
+      <span class="sticker s-spark-pink" style="--d:-1"><Doodle kind="sparkle" color="var(--pink)" /></span>
+      <span class="sticker s-spark-cream" style="--d:0.8"><Doodle kind="sparkle" color="var(--cream)" /></span>
+      <span class="sticker s-squiggle" style="--d:-0.7"><Doodle kind="squiggle" color="var(--cyan)" /></span>
+      <p class="note" style="--d:0.5">
+        <span class="note__tape"><Doodle kind="tape" color="var(--purple)" /></span>
+        {site.currently}
+      </p>
+    </div>
+
+    <p class="scroll-hint" aria-hidden="true"><span>scroll</span><span class="scroll-hint__key">↓</span></p>
+  </div>
+</section>
+
+<script>
+  import { initHero } from '../scripts/hero';
+  document.querySelectorAll<HTMLElement>('[data-hero]').forEach(initHero);
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    height: 280svh;
+  }
+
+  .stage {
+    --p: 0;
+    --mx: 0;
+    --my: 0;
+    position: sticky;
+    top: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: 2vw;
+    height: 100svh;
+    padding: 92px var(--gutter) 44px;
+    overflow: clip;
+  }
+
+  /* ── Copy ───────────────────────────── */
+  .copy {
+    position: relative;
+    z-index: 5;
+    padding-left: clamp(0px, 3vw, 56px);
+  }
+
+  .hello {
+    margin: 0 0 -0.35em 0.2em;
+    color: var(--pink);
+    font: 400 clamp(30px, 3.2vw, 48px) / 1 var(--font-hand);
+    rotate: -7deg;
+    transform-origin: left bottom;
+    width: max-content;
+  }
+
+  .name {
+    margin: 0;
+    font: 400 clamp(130px, 16.5vw, 290px) / 0.86 var(--font-display);
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+  }
+
+  .name__letter {
+    display: inline-block;
+    color: var(--yellow);
+    -webkit-text-stroke: 0.07em var(--ink);
+    paint-order: stroke fill;
+    text-shadow:
+      0.035em 0.045em 0 var(--ink),
+      0.06em 0.075em 0 var(--pink);
+    rotate: calc((var(--i) - 1) * 3deg);
+  }
+
+  .aka {
+    margin: 1.35em 0 0;
+    color: var(--ink-soft);
+    font-size: clamp(14px, 1.1vw, 16px);
+    font-weight: 500;
+  }
+
+  .aka__tag {
+    padding: 3px 6px 2px;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    background: var(--cream);
+    color: var(--ink);
+    font: 400 10px/1 var(--font-pixel);
+    text-transform: uppercase;
+    vertical-align: 2px;
+  }
+
+  .headline {
+    margin: 0.35em 0 0;
+    font-size: clamp(28px, 2.9vw, 46px);
+    font-weight: 780;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .headline mark {
+    padding: 0 0.08em;
+    background: linear-gradient(transparent 55%, var(--yellow) 55%, var(--yellow) 92%, transparent 92%);
+    color: inherit;
+  }
+
+  .intro {
+    max-width: 32ch;
+    margin: 0.7em 0 0;
+    color: var(--ink-soft);
+    font-size: clamp(16px, 1.25vw, 19px);
+    line-height: 1.45;
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  .cta__main {
+    position: relative;
+  }
+
+  /* ── Art ────────────────────────────── */
+  .art {
+    position: relative;
+    z-index: 2;
+    justify-self: center;
+    width: min(100%, calc((100svh - 190px) * 0.74), 540px);
+  }
+
+  .sticker {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    translate: calc(var(--mx) * var(--d, 1) * -12px) calc(var(--my) * var(--d, 1) * -9px + var(--p) * var(--d, 1) * -34px);
+  }
+
+  .sticker :global(svg) {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .s-star {
+    top: -7%;
+    left: -13%;
+    z-index: 3;
+    width: clamp(72px, 8.5vw, 132px);
+    rotate: 14deg;
+  }
+
+  .s-spark-pink {
+    top: 9%;
+    right: -10%;
+    width: clamp(36px, 3.6vw, 58px);
+  }
+
+  .s-spark-cream {
+    top: 46%;
+    left: -9%;
+    width: clamp(24px, 2.4vw, 38px);
+  }
+
+  .s-squiggle {
+    right: -12%;
+    bottom: 10%;
+    width: clamp(70px, 8vw, 124px);
+    rotate: -12deg;
+  }
+
+  .s-cursor {
+    right: -18px;
+    bottom: -30px;
+    width: 28px;
+    animation: nudge 2.8s var(--ease-out) infinite;
+  }
+
+  @keyframes nudge {
+    0%,
+    70%,
+    100% {
+      transform: translate(0, 0);
+    }
+    82% {
+      transform: translate(-6px, -7px);
+    }
+  }
+
+  .note {
+    position: absolute;
+    bottom: -7%;
+    left: -25%;
+    z-index: 4;
+    width: max-content;
+    max-width: 180px;
+    margin: 0;
+    padding: 18px 14px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 4px 4px 14px 4px;
+    background: #fff1a8;
+    box-shadow: 4px 5px 0 var(--ink);
+    font: 400 21px/1.05 var(--font-hand);
+    rotate: -6deg;
+    translate: calc(var(--mx) * var(--d) * -12px) calc(var(--my) * var(--d) * -9px + var(--p) * var(--d) * -34px);
+  }
+
+  .note__tape {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 70px;
+    translate: -50% 0;
+    rotate: 4deg;
+  }
+
+  .note__tape :global(svg) {
+    width: 100%;
+    height: 22px;
+  }
+
+  /* Captions narrate the three acts. */
+  .captions {
+    position: absolute;
+    top: -58px;
+    right: 4%;
+    z-index: 3;
+    height: 44px;
+    margin: 0;
+    font: 400 clamp(22px, 2vw, 30px) / 1 var(--font-hand);
+  }
+
+  .captions span[data-caption] {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    white-space: nowrap;
+    opacity: 0;
+    translate: 0 10px;
+    rotate: -3deg;
+    transition:
+      opacity 0.35s ease,
+      translate 0.45s var(--spring);
+  }
+
+  .stage[data-act='1'] [data-caption='1'],
+  .stage[data-act='2'] [data-caption='2'],
+  .stage[data-act='3'] [data-caption='3'] {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .captions__arrow {
+    position: absolute;
+    top: 30px;
+    right: -44px;
+    width: 46px;
+    rotate: 22deg;
+  }
+
+  /* ── Scroll hint ────────────────────── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 18px;
+    left: calc(var(--gutter) + clamp(0px, 3vw, 56px));
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font: 400 10px/1 var(--font-pixel);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: calc(1 - var(--p) * 30);
+  }
+
+  .scroll-hint__key {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    background: var(--cream);
+    box-shadow: 0 3px 0 var(--ink);
+    font: 700 13px/1 var(--font-body);
+    animation: tap 1.6s var(--ease-out) infinite;
+  }
+
+  @keyframes tap {
+    0%,
+    60%,
+    100% {
+      translate: 0 0;
+      box-shadow: 0 3px 0 var(--ink);
+    }
+    75% {
+      translate: 0 3px;
+      box-shadow: 0 0 0 var(--ink);
+    }
+  }
+
+  /* ── Entrance (JS only) ─────────────── */
+  :global(.js) .stage:not(.is-ready) .name__letter,
+  :global(.js) .stage:not(.is-ready) .sticker,
+  :global(.js) .stage:not(.is-ready) .note,
+  :global(.js) .stage:not(.is-ready) .hello {
+    opacity: 0;
+    scale: 0.4;
+  }
+
+  .stage.is-ready .name__letter {
+    animation: stamp 0.7s var(--spring) both;
+    animation-delay: calc(var(--i) * 90ms);
+  }
+
+  .stage.is-ready .sticker,
+  .stage.is-ready .note,
+  .stage.is-ready .hello {
+    animation: pop 0.6s var(--spring) both;
+    animation-delay: 0.45s;
+  }
+
+  .stage.is-ready .s-cursor {
+    animation:
+      pop 0.6s var(--spring) 0.8s both,
+      nudge 2.8s var(--ease-out) 1.6s infinite;
+  }
+
+  @keyframes stamp {
+    from {
+      opacity: 0;
+      scale: 1.6;
+      translate: 0 -30px;
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.3;
+    }
+  }
+
+  /* ── Phones & small tablets ─────────────
+     Not a shrunk desktop: the name sits on top of the print,
+     the print sizes itself to the screen height, extras step aside. */
+  @media (max-width: 899px) {
+    .hero {
+      height: 240svh;
+    }
+
+    .stage {
+      --name-size: clamp(92px, 28vw, 170px);
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      align-content: center;
+      padding: 70px var(--gutter) 20px;
+    }
+
+    .copy {
+      display: contents;
+    }
+
+    .copy__top {
+      position: relative;
+      z-index: 5;
+      grid-row: 1;
+      margin-bottom: calc(var(--name-size) * -0.46);
+      pointer-events: none;
+    }
+
+    .copy__bottom {
+      position: relative;
+      z-index: 5;
+      grid-row: 3;
+      padding-top: 16px;
+    }
+
+    .art {
+      grid-row: 2;
+      justify-self: end;
+      width: min(72vw, calc((100svh - 390px) * 0.8), 440px);
+      margin-right: 3vw;
+    }
+
+    .name {
+      font-size: var(--name-size);
+    }
+
+    .hello {
+      font-size: clamp(24px, 7vw, 36px);
+    }
+
+    .aka {
+      margin-top: 0;
+      font-size: 13px;
+    }
+
+    .aka__role {
+      display: block;
+      margin-top: 4px;
+    }
+
+    .aka__dot {
+      display: none;
+    }
+
+    .sticker,
+    .note {
+      translate: none;
+    }
+
+    .headline {
+      font-size: clamp(24px, 7vw, 36px);
+    }
+
+    .intro,
+    .note,
+    .scroll-hint {
+      display: none;
+    }
+
+    .cta {
+      margin-top: 14px;
+      gap: 12px;
+    }
+
+    .s-star {
+      top: 16%;
+      left: auto;
+      right: -9%;
+      width: clamp(52px, 14vw, 90px);
+    }
+
+    .s-spark-pink {
+      top: auto;
+      bottom: 22%;
+      right: -7%;
+    }
+
+    .s-spark-cream {
+      top: 52%;
+      left: -11%;
+    }
+
+    .s-squiggle {
+      right: auto;
+      bottom: -3%;
+      left: -18%;
+      width: clamp(56px, 16vw, 96px);
+    }
+
+    .captions {
+      top: -38px;
+      right: 0;
+      height: 34px;
+      font-size: clamp(18px, 5vw, 24px);
+    }
+
+    .captions span[data-caption] {
+      width: 6.2em;
+      white-space: normal;
+      text-align: right;
+      line-height: 0.95;
+    }
+
+    .captions__arrow {
+      display: none;
+    }
+  }
+
+  @media (max-width: 899px) and (min-height: 760px) {
+    .intro {
+      display: block;
+      font-size: 16px;
+    }
+
+    .art {
+      width: min(76vw, calc((100svh - 460px) * 0.8), 440px);
+    }
+  }
+
+  /* Very short screens (landscape phones): no pinning, just a calm static layout. */
+  @media (max-height: 540px) {
+    .hero {
+      height: auto;
+    }
+
+    .stage {
+      position: relative;
+      height: auto;
+      min-height: 100svh;
+      padding-top: 84px;
+    }
+
+    .art {
+      width: min(42vw, 360px);
+      justify-self: center;
+    }
+
+    .scroll-hint {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero {
+      height: auto;
+    }
+
+    .stage {
+      position: relative;
+      height: auto;
+      min-height: 100svh;
+    }
+  }
+</style>

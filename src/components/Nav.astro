@@ -1,0 +1,128 @@
+---
+import Doodle from './Doodle.astro';
+import { site } from '../data/site';
+---
+
+<header class="nav">
+  <a class="logo" href="/" aria-label={`${site.name}, home`}>
+    {site.name.toLowerCase()}<span class="logo__spark"><Doodle kind="sparkle" color="var(--pink)" /></span>
+  </a>
+
+  <nav class="links" aria-label="Main">
+    {site.nav.map((item) => <a class="key key--nav" href={item.href}>{item.label}</a>)}
+  </nav>
+
+  <button class="key key--nav menu-button" popovertarget="site-menu" aria-label="Open menu">menu</button>
+  <nav id="site-menu" class="menu" popover aria-label="Main (mobile)">
+    {site.nav.map((item) => <a class="key" href={item.href}>{item.label}</a>)}
+  </nav>
+</header>
+
+<script>
+  // Once the pinned hero is done, give the nav a solid strip so it never sits on top of text.
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  const syncNav = () => {
+    const limit = hero ? hero.offsetTop + hero.offsetHeight - innerHeight - 20 : 40;
+    nav?.classList.toggle('is-solid', scrollY > limit);
+  };
+  addEventListener('scroll', syncNav, { passive: true });
+  addEventListener('resize', syncNav);
+  syncNav();
+
+  const menu = document.getElementById('site-menu');
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) menu.hidePopover();
+  });
+</script>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px var(--gutter);
+    pointer-events: none;
+    transition:
+      background-color 0.25s ease,
+      box-shadow 0.25s ease,
+      padding 0.25s ease;
+  }
+
+  .nav:global(.is-solid) {
+    padding-block: 10px;
+    background-color: var(--paper);
+    box-shadow: 0 var(--line) 0 var(--ink);
+    pointer-events: auto;
+  }
+
+  .nav > * {
+    pointer-events: auto;
+  }
+
+  .logo {
+    position: relative;
+    font: 400 30px/1 var(--font-display);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .logo__spark {
+    position: absolute;
+    top: -8px;
+    right: -18px;
+    width: 18px;
+    transition: rotate 0.5s var(--spring);
+  }
+
+  .logo:hover .logo__spark {
+    rotate: 90deg;
+  }
+
+  .links {
+    display: flex;
+    gap: 10px;
+  }
+
+  .key--nav {
+    --key-depth: 4px;
+    min-height: 40px;
+    padding: 0.5em 0.9em;
+    font-size: 15px;
+  }
+
+  .menu-button {
+    display: none;
+  }
+
+  .menu {
+    inset: 70px var(--gutter) auto auto;
+    margin: 0;
+    padding: 12px;
+    border: var(--line) solid var(--ink);
+    border-radius: 18px;
+    background: var(--paper);
+    box-shadow: 6px 7px 0 var(--ink);
+  }
+
+  .menu:popover-open {
+    display: grid;
+    gap: 12px;
+    min-width: 180px;
+  }
+
+  @media (max-width: 899px) {
+    .links {
+      display: none;
+    }
+    .menu-button {
+      display: inline-flex;
+    }
+    .logo {
+      font-size: 26px;
+    }
+  }
+</style>

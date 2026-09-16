@@ -1,0 +1,160 @@
+/* ─────────────────────────────────────────────
+   Kai's world: tokens
+   One ground (paper), one world color (blue),
+   black ink, and four loud accents used sparingly.
+   ───────────────────────────────────────────── */
+:root {
+  --paper: #fff4e2;
+  --paper-deep: #f6e2c2;
+  --ink: #1b1526;
+  --ink-soft: #4d4660;
+  --blue: #86b4f7;
+  --blue-deep: #4f6fe3;
+  --blue-pale: #dce8ff;
+  --yellow: #ffd23f;
+  --pink: #ff5c9e;
+  --purple: #7f52f5;
+  --cyan: #38d1db;
+  --cream: #fff8ec;
+
+  --font-display: 'Bagel Fat One', 'Arial Rounded MT Bold', system-ui, sans-serif;
+  --font-body: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: 'Silkscreen', ui-monospace, monospace;
+  --font-hand: 'Delicious Handrawn', 'Comic Sans MS', cursive;
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --line: 3px;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring: linear(0, 0.06 2.4%, 0.25 5.3%, 0.83 13%, 1.03 17%, 1.13 21%, 1.15 24%, 1.12 29%, 1.02 38%, 0.98 45%, 0.97 51%, 1 70%, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgb(79 111 227 / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(79 111 227 / 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 3px dashed var(--purple);
+  outline-offset: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   Keycap: the site's one button.
+   It foreshadows the keyboard from the first second.
+   ───────────────────────────────────────────── */
+.key {
+  --key-face: var(--cream);
+  --key-edge: var(--ink);
+  --key-depth: 5px;
+  --key-lift: 0px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 44px;
+  padding: 0.6em 1.05em;
+  border: var(--line) solid var(--ink);
+  border-radius: 13px;
+  background: var(--key-face);
+  box-shadow: 0 calc(var(--key-depth) + var(--key-lift)) 0 var(--key-edge);
+  color: var(--ink);
+  font: 650 16px/1 var(--font-body);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateY(calc(var(--key-lift) * -1));
+  transition:
+    transform 0.16s var(--ease-out),
+    box-shadow 0.16s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .key:hover {
+    --key-lift: 2px;
+  }
+}
+
+.key:active {
+  --key-lift: 0px;
+  transform: translateY(var(--key-depth));
+  box-shadow: 0 0 0 var(--key-edge);
+  transition-duration: 0.04s;
+}
+
+.key--pink {
+  --key-face: var(--pink);
+}
+
+.key--yellow {
+  --key-face: var(--yellow);
+}
+
+.key small {
+  font: 400 10px/1 var(--font-pixel);
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
