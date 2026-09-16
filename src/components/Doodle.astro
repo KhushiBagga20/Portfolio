@@ -1,0 +1,124 @@
+---
+// Little hand-made stickers. All decorative, so hidden from screen readers.
+// Later: swap these for doodles you draw yourself (export as SVG).
+
+interface Props {
+  kind: 'star' | 'sparkle' | 'squiggle' | 'cursor' | 'arrow' | 'tape';
+  color?: string;
+  seed?: number;
+  class?: string;
+  style?: string;
+}
+
+const { kind, color = 'var(--yellow)', seed = 3, class: className, style } = Astro.props;
+const vars = `--c:${color};${style ?? ''}`;
+
+// A slightly wobbly 8-point star, so no two look machine-made.
+function rand(s: number) {
+  return () => {
+    s |= 0;
+    s = (s + 0x6d2b79f5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function starPath(points = 8, outer = 46, inner = 21) {
+  const r = rand(seed);
+  const pts: string[] = [];
+  for (let i = 0; i < points * 2; i++) {
+    const radius = (i % 2 === 0 ? outer : inner) * (0.9 + r() * 0.18);
+    const a = -Math.PI / 2 + (i * Math.PI) / points + (r() - 0.5) * 0.12;
+    pts.push(`${(50 + radius * Math.cos(a)).toFixed(1)} ${(50 + radius * Math.sin(a)).toFixed(1)}`);
+  }
+  return `M${pts.join(' L')} Z`;
+}
+
+// Classic 90s arrow cursor. X = ink outline, . = fill.
+const cursorMap = [
+  'X', 'XX', 'X.X', 'X..X', 'X...X', 'X....X', 'X.....X', 'X......X', 'X.......X', 'X........X',
+  'X.........X', 'X......XXXXX', 'X...X..X', 'X..XX..X', 'X.X  X..X', 'XX   X..X', 'X     X..X',
+  '      X..X', '       XX',
+];
+const cursorRects = cursorMap.flatMap((row, y) =>
+  [...row].flatMap((ch, x) => (ch === 'X' || ch === '.' ? [{ x, y, ink: ch === 'X' }] : [])),
+);
+---
+
+{
+  kind === 'star' && (
+    <svg class={className} style={vars} viewBox="0 0 100 100" aria-hidden="true">
+      <path class="fill ink-line" d={starPath()} stroke-width="5" />
+    </svg>
+  )
+}
+{
+  kind === 'sparkle' && (
+    <svg class={className} style={vars} viewBox="0 0 100 100" aria-hidden="true">
+      <path
+        d="M50 2 C55 36 64 45 98 50 C64 55 55 64 50 98 C45 64 36 55 2 50 C36 45 45 36 50 2 Z"
+        class="fill ink-line"
+        stroke-width="5"
+      />
+    </svg>
+  )
+}
+{
+  kind === 'squiggle' && (
+    <svg class={className} style={vars} viewBox="0 0 120 40" aria-hidden="true" overflow="visible">
+      <path
+        d="M6 22 Q18 4 30 20 T54 20 T78 20 T102 20 T114 16"
+        class="color-line"
+        stroke-width="8"
+      />
+    </svg>
+  )
+}
+{
+  kind === 'cursor' && (
+    <svg class={className} style={vars} viewBox="-1 -1 14 21" aria-hidden="true" shape-rendering="crispEdges">
+      <g transform="translate(0.9 0.9)" opacity="0.9">
+        {cursorRects.map((p) => <rect class="ink" x={p.x} y={p.y} width="1.02" height="1.02" />)}
+      </g>
+      {cursorRects.map((p) => <rect class={p.ink ? 'ink' : 'fill'} x={p.x} y={p.y} width="1.02" height="1.02" />)}
+    </svg>
+  )
+}
+{
+  kind === 'arrow' && (
+    <svg class={className} style={vars} viewBox="0 0 90 60" aria-hidden="true" overflow="visible">
+      <path class="color-line" d="M6 8 C30 2 62 12 76 44" stroke-width="5" />
+      <path class="color-line" d="M62 38 L77 46 L82 29" stroke-width="5" />
+    </svg>
+  )
+}
+{
+  kind === 'tape' && (
+    <svg class={className} style={vars} viewBox="0 0 140 44" aria-hidden="true" preserveAspectRatio="none">
+      <path
+        d="M4 6 L10 2 L14 7 L20 3 L136 4 L132 10 L138 16 L133 22 L138 29 L132 35 L137 41 L20 42 L14 38 L8 43 L3 36 L8 29 L2 22 L7 15 Z"
+        class="fill"
+        opacity="0.82"
+      />
+    </svg>
+  )
+}
+
+<style>
+  .fill {
+    fill: var(--c);
+  }
+  .ink {
+    fill: var(--ink);
+  }
+  .ink-line {
+    stroke: var(--ink);
+    stroke-linejoin: round;
+  }
+  .color-line {
+    fill: none;
+    stroke: var(--c);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>
