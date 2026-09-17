@@ -2,23 +2,24 @@
 // Anything marked TODO is a placeholder waiting for your real content.
 
 export const site = {
-  name: 'Kai',
+  name: 'Khushi',
   fullName: 'Khushi Bagga',
-  title: 'Kai (Khushi Bagga): portfolio',
+  title: 'Khushi Bagga · portfolio',
   description:
-    'Kai is a computer science student studying AI & Future Technologies who builds for the web, draws, writes, and thinks about AI ethics.',
+    'Khushi Bagga is a computer science student studying AI & Future Technologies who builds for the web, draws, writes, and thinks about AI ethics.',
 
   hello: "hi, i'm",
-  role: 'CS student · AI & Future Technologies',
+  tag: 'cs student',
+  program: 'AI & Future Technologies',
   headline: 'part engineer, part sketchbook.',
   intro: 'I build things, explore ideas, and occasionally make the internet weird.',
   currently: 'currently: building this website',
 
   nav: [
-    { label: 'about', href: '#next', hint: 'A' },
-    { label: 'projects', href: '#next', hint: 'P' },
-    { label: 'writing', href: '#next', hint: 'W' },
-    { label: 'contact', href: '#next', hint: 'C' },
+    { label: 'about', href: '#about' },
+    { label: 'projects', href: '#projects' },
+    { label: 'writing', href: '#writing' },
+    { label: 'contact', href: '#contact' },
   ],
 
   // TODO: real links once the contact section exists.
