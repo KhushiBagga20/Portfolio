@@ -176,3 +176,54 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+
+.key--sm {
+  --key-depth: 4px;
+  min-height: 40px;
+  padding: 0.55em 0.9em;
+  font-size: 15px;
+}
+
+/* ─────────────────────────────────────────────
+   Content sections
+   ───────────────────────────────────────────── */
+.section {
+  position: relative;
+  padding: clamp(72px, 10vw, 128px) var(--gutter);
+  border-top: var(--line) solid var(--ink);
+  scroll-margin-top: 60px;
+}
+
+.section--deep {
+  background-color: var(--paper-deep);
+}
+
+.section__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────────────
+   Page transitions: a project's floppy disk flies from the grid
+   into the disk drive on its case-study page (where browsers support it).
+   ───────────────────────────────────────────── */
+@view-transition {
+  navigation: auto;
+}
+
+@media (min-width: 700px) {
+  .vt-disk {
+    view-transition-name: var(--vt);
+  }
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}

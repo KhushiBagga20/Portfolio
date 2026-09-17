@@ -1,0 +1,169 @@
+---
+import Badge from './Badge.astro';
+import SectionHead from './SectionHead.astro';
+import { achievements } from '../data/achievements';
+
+const stubColor = (labels: string[]) =>
+  labels.includes('Recognition')
+    ? 'var(--tomato)'
+    : labels.includes('Ongoing')
+      ? 'var(--mint)'
+      : labels.includes('Workshop')
+        ? 'var(--lilac)'
+        : 'var(--lemon)';
+const tilts = [-1.2, 0.8, -0.6, 1, -0.9];
+---
+
+<section id="milestones" class="section" aria-labelledby="milestones-title">
+  <div class="section__inner">
+    <SectionHead eyebrow="milestones.log · achievements & recognition" title="milestones" id="milestones-title" fill="mint" />
+
+    <ol class="tickets">
+      {
+        achievements.map((a, i) => (
+          <li class="ticket" style={`--stub:${stubColor(a.labels)};--r:${tilts[i % tilts.length]}deg`}>
+            <div class="ticket__stub" aria-hidden="true">
+              <span>#{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="ticket__main">
+              {(a.where || a.year) && <p class="ticket__where">{[a.where, a.year].filter(Boolean).join(' · ')}</p>}
+              <h3 class="ticket__event">{a.event}</h3>
+              <ul class="ticket__highlights">
+                {a.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+              {a.project.slug && (
+                <p class="ticket__project">
+                  project: <a href={`/projects/${a.project.slug}/`}>{a.project.name}</a>
+                </p>
+              )}
+              <div class="badges">
+                {a.labels.map((l) => (
+                  <Badge label={l} />
+                ))}
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .tickets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 26px;
+    margin: 56px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticket {
+    position: relative;
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    border: var(--line) solid var(--ink);
+    border-radius: 16px;
+    background: var(--cream);
+    box-shadow: 6px 7px 0 var(--ink);
+    rotate: var(--r);
+  }
+
+  /* punched notches on the perforation */
+  .ticket::before,
+  .ticket::after {
+    content: '';
+    position: absolute;
+    left: 45px;
+    width: 22px;
+    height: 22px;
+    border: var(--line) solid var(--ink);
+    border-radius: 50%;
+    background: var(--paper);
+  }
+
+  .ticket::before {
+    top: -13px;
+    clip-path: inset(50% 0 0 0);
+  }
+
+  .ticket::after {
+    bottom: -13px;
+    clip-path: inset(0 0 50% 0);
+  }
+
+  .ticket__stub {
+    display: grid;
+    place-items: center;
+    border-right: 3px dashed var(--ink);
+    border-radius: 13px 0 0 13px;
+    background: var(--stub);
+  }
+
+  .ticket__stub span {
+    font: 400 20px/1 var(--font-display);
+    writing-mode: vertical-rl;
+    rotate: 180deg;
+  }
+
+  .ticket__main {
+    padding: 18px 20px 20px;
+  }
+
+  .ticket__where {
+    margin: 0 0 6px;
+    color: var(--ink-soft);
+    font: 400 10px/1.3 var(--font-pixel);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ticket__event {
+    margin: 0;
+    font: 400 24px/1.05 var(--font-display);
+  }
+
+  .ticket__highlights {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ticket__highlights li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .ticket__highlights li + li {
+    margin-top: 4px;
+  }
+
+  .ticket__highlights li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--tomato);
+  }
+
+  .ticket__project {
+    margin: 12px 0 0;
+    font: 400 21px/1.1 var(--font-hand);
+  }
+
+  .ticket__project a {
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+</style>

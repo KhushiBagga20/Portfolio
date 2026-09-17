@@ -1,0 +1,562 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Badge from '../../components/Badge.astro';
+import ComingSoon from '../../components/ComingSoon.astro';
+import FloppyDisk from '../../components/FloppyDisk.astro';
+import { projects, type Project } from '../../data/projects';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      prev: projects[(i - 1 + projects.length) % projects.length],
+      next: projects[(i + 1) % projects.length],
+    },
+  }));
+}
+
+interface Props {
+  project: Project;
+  prev: Project;
+  next: Project;
+}
+
+const { project: p, prev, next } = Astro.props;
+
+// Event and result only make sense for hackathon projects; elsewhere they'd read as "missing".
+const isHackathon = p.labels.includes('Hackathon');
+const isOngoing = p.labels.includes('Ongoing');
+const facts: { label: string; value?: string }[] = [
+  { label: 'type', value: p.type },
+  ...(p.event || isHackathon ? [{ label: 'event', value: p.event }] : []),
+  ...(p.outcome || (isHackathon && !isOngoing) ? [{ label: 'result', value: p.outcome?.join(' · ') }] : []),
+  { label: 'my role', value: p.role },
+];
+const links = [
+  { label: 'GitHub', href: p.links.github },
+  { label: 'Live demo', href: p.links.demo },
+].filter((l): l is { label: string; href: string } => Boolean(l.href));
+---
+
+<Base title={`${p.name} · ${site.fullName}`} description={p.oneLiner ?? `${p.name}: ${p.type}.`}>
+  <Nav />
+  <main class="case">
+    <a class="key key--sm back" href="/#projects"><span aria-hidden="true">←</span> all projects</a>
+
+    <div class="case__grid">
+      <aside class="side" aria-label="Project facts">
+        <div class="drive">
+          <span class="vt-disk drive__disk" style={`--vt: disk-${p.slug}`}>
+            <FloppyDisk tone={p.disk.tone} scribble={p.disk.scribble} />
+          </span>
+          <div class="drive__box" aria-hidden="true">
+            <span class="drive__slot"></span>
+            <span class="drive__row"><span class="drive__led"></span>now reading</span>
+          </div>
+        </div>
+
+        <dl class="facts">
+          {
+            facts.map((f) => (
+              <div class="fact">
+                <dt>{f.label}</dt>
+                <dd>{f.value ?? <ComingSoon />}</dd>
+              </div>
+            ))
+          }
+          <div class="fact">
+            <dt>stack</dt>
+            <dd>
+              {
+                p.stack ? (
+                  <ul class="stack">
+                    {p.stack.map((s) => (
+                      <li>{s}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ComingSoon />
+                )
+              }
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>links</dt>
+            <dd>
+              {
+                links.length ? (
+                  <div class="links">
+                    {links.map((l) => (
+                      <a class="key key--sm" href={l.href}>
+                        {l.label}
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <ComingSoon text="links coming soon" />
+                )
+              }
+            </dd>
+          </div>
+        </dl>
+      </aside>
+
+      <article class="monitor" aria-labelledby="case-title">
+        <div class="screen">
+          <div class="screen__bar">
+            <span class="screen__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="screen__file">{p.slug}.case</span>
+          </div>
+
+          <div class="screen__body">
+            <p class="kicker">{[p.type, p.event].filter(Boolean).join(' · ')}</p>
+            <h1 id="case-title">{p.name}</h1>
+            {
+              p.earlierName && (
+                <p class="earlier">
+                  earlier known as <strong>{p.earlierName}</strong>
+                </p>
+              )
+            }
+            {p.oneLiner ? <p class="lede">{p.oneLiner}</p> : <ComingSoon text="description coming soon" />}
+            <div class="badges">
+              {
+                p.labels.map((l) => (
+                  <Badge label={l} />
+                ))
+              }
+            </div>
+
+            {
+              p.sections.map((s) => (
+                <section class:list={['block', s.kind && `block--${s.kind}`]}>
+                  <h2>{s.title}</h2>
+                  {s.note && <p class="block__note">{s.note}</p>}
+                  {s.body && <p class="block__body">{s.body}</p>}
+                  {s.items && (
+                    <ul class="list">
+                      {s.items.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {s.groups && (
+                    <div class="groups">
+                      {s.groups.map((g) => (
+                        <div class="group">
+                          <h3>{g.title}</h3>
+                          <ul class="list">
+                            {g.items.map((item) => (
+                              <li>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {!s.body && !s.items && !s.groups && <ComingSoon />}
+                </section>
+              ))
+            }
+          </div>
+        </div>
+        <div class="monitor__chin" aria-hidden="true">
+          <span>khushi os</span>
+          <span class="monitor__power"></span>
+        </div>
+      </article>
+    </div>
+
+    <nav class="pager" aria-label="More projects">
+      <a class="key pager__link" href={`/projects/${prev.slug}/`}>
+        <span aria-hidden="true">←</span>
+        {prev.name}
+      </a>
+      <a class="key pager__link" href={`/projects/${next.slug}/`}>
+        {next.name}
+        <span aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  .case {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 104px var(--gutter) 96px;
+  }
+
+  .case__grid {
+    display: grid;
+    grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(28px, 4vw, 56px);
+    margin-top: 32px;
+  }
+
+  /* ── Disk drive + facts ─────────────── */
+  .side {
+    position: sticky;
+    top: 92px;
+  }
+
+  .drive {
+    padding-top: 8px;
+  }
+
+  .drive__disk {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 64%;
+    margin: 0 auto -13%;
+    rotate: -3deg;
+  }
+
+  .drive__box {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px 18px 14px;
+    border: var(--line) solid var(--ink);
+    border-radius: 16px;
+    background: var(--lilac);
+    box-shadow: 6px 7px 0 var(--ink);
+  }
+
+  .drive__slot {
+    height: 12px;
+    border: var(--line) solid var(--ink);
+    border-radius: 999px;
+    background: var(--ink);
+  }
+
+  .drive__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 400 10px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .drive__led {
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--mint);
+    animation: led 1.1s steps(2, jump-none) infinite;
+  }
+
+  @keyframes led {
+    to {
+      background: var(--cream);
+    }
+  }
+
+  .facts {
+    display: grid;
+    gap: 14px;
+    margin: 26px 0 0;
+    padding: 18px;
+    border: var(--line) solid var(--ink);
+    border-radius: 16px;
+    background: var(--cream);
+    box-shadow: 6px 7px 0 var(--ink);
+  }
+
+  dt {
+    color: var(--ink-soft);
+    font: 400 10px/1 var(--font-pixel);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 5px 0 0;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack li {
+    padding: 4px 8px 3px;
+    border: 2px solid var(--ink);
+    border-radius: 7px;
+    background: var(--paper);
+    font-size: 13px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ── Monitor ────────────────────────── */
+  .monitor {
+    padding: 16px 16px 0;
+    border: var(--line) solid var(--ink);
+    border-radius: 28px;
+    background: var(--cream);
+    box-shadow: 12px 14px 0 var(--ink);
+  }
+
+  .screen {
+    overflow: hidden;
+    border: var(--line) solid var(--ink);
+    border-radius: 14px;
+    background: #fffdf8;
+  }
+
+  .screen__bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: var(--line) solid var(--ink);
+    background: var(--lemon);
+    font: 400 11px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .screen__dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .screen__dots i {
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--cream);
+  }
+
+  .screen__body {
+    padding: clamp(24px, 4vw, 52px);
+  }
+
+  .kicker {
+    margin: 0;
+    color: var(--ink-soft);
+    font: 400 11px/1.4 var(--font-pixel);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 10px 0 0;
+    color: var(--lemon);
+    font: 400 clamp(52px, 6.4vw, 96px) / 0.92 var(--font-display);
+    -webkit-text-stroke: 0.07em var(--ink);
+    paint-order: stroke fill;
+    text-shadow:
+      0.035em 0.045em 0 var(--ink),
+      0.065em 0.08em 0 var(--tomato);
+  }
+
+  .earlier {
+    margin: 12px 0 0;
+    font: 400 26px/1 var(--font-hand);
+  }
+
+  .lede {
+    max-width: 48ch;
+    margin: 18px 0 0;
+    font-size: clamp(19px, 1.7vw, 23px);
+    font-weight: 650;
+    line-height: 1.4;
+  }
+
+  .screen__body > :global(.soon) {
+    margin-top: 18px;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .block {
+    margin-top: 40px;
+    padding-top: 26px;
+    border-top: 2px dashed rgb(27 21 38 / 0.22);
+  }
+
+  .block h2 {
+    margin: 0;
+    font: 400 28px/1.05 var(--font-display);
+  }
+
+  .block > :global(.soon) {
+    margin-top: 14px;
+  }
+
+  .block__note {
+    display: inline-block;
+    margin: 12px 0 0;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgb(127 224 176 / 0.35);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .block__body {
+    max-width: 62ch;
+    margin: 12px 0 0;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .list {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .list li {
+    position: relative;
+    padding-left: 28px;
+    line-height: 1.45;
+  }
+
+  .list li + li {
+    margin-top: 8px;
+  }
+
+  .list li::before {
+    content: '✦';
+    position: absolute;
+    left: 4px;
+    color: var(--tomato);
+  }
+
+  .block--working .list li::before {
+    content: '';
+    top: 3px;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    border: 2px solid var(--ink);
+    border-radius: 5px;
+    background:
+      linear-gradient(45deg, transparent 44%, var(--ink) 44% 56%, transparent 56%) 3px 4px / 5px 7px no-repeat,
+      linear-gradient(-45deg, transparent 44%, var(--ink) 44% 56%, transparent 56%) 6px 1px / 7px 11px no-repeat,
+      var(--mint);
+  }
+
+  .block--history {
+    padding: 24px;
+    border: 2px dashed var(--ink);
+    border-radius: 14px;
+    background: rgb(203 184 255 / 0.25);
+  }
+
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 32px;
+    margin-top: 18px;
+  }
+
+  .group h3 {
+    margin: 0;
+    font: 400 12px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .monitor__chin {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 14px;
+    font: 400 10px/1 var(--font-pixel);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .monitor__power {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--mint);
+  }
+
+  /* ── Pager ──────────────────────────── */
+  .pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 56px;
+  }
+
+  @media (max-width: 899px) {
+    .case {
+      padding-top: 88px;
+    }
+
+    .case__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Phones & tablets: disk, then the case study, then the fact sheet. */
+    .side {
+      display: contents;
+    }
+
+    .drive {
+      order: 1;
+      width: min(240px, 60%);
+    }
+
+    .monitor {
+      order: 2;
+    }
+
+    .facts {
+      order: 3;
+      margin: 0;
+    }
+
+    .monitor {
+      padding: 8px 8px 0;
+      border-radius: 20px;
+      box-shadow: 7px 8px 0 var(--ink);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drive__led {
+      animation: none;
+    }
+  }
+</style>

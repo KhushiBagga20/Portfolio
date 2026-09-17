@@ -1,0 +1,123 @@
+---
+import ComingSoon from './ComingSoon.astro';
+import SectionHead from './SectionHead.astro';
+import { site } from '../data/site';
+
+// Only links you've actually filled in (src/data/site.ts) show up.
+const links = [
+  { label: 'email', href: site.links.email ? `mailto:${site.links.email}` : '' },
+  { label: 'GitHub', href: site.links.github },
+  { label: 'LinkedIn', href: site.links.linkedin },
+  { label: 'résumé', href: site.links.resume },
+].filter((l) => l.href);
+---
+
+<section id="contact" class="section section--deep" aria-labelledby="contact-title">
+  <div class="section__inner contact">
+    <SectionHead eyebrow="contact.eml" title="say hi" id="contact-title" />
+
+    <div class="mail">
+      <div class="mail__bar">
+        <span>new message</span>
+        <span class="mail__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+      <div class="mail__body">
+        <p class="mail__to"><span>to:</span> {site.fullName}</p>
+        <p class="mail__msg">
+          Building something unusual, running a hackathon, or want to talk about AI and design? I'd love to hear from you.
+        </p>
+        {
+          links.length ? (
+            <div class="mail__links">
+              {links.map((l) => (
+                <a class="key" href={l.href}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          ) : (
+            <ComingSoon text="contact links coming soon" />
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: clamp(32px, 6vw, 88px);
+  }
+
+  .mail {
+    border: var(--line) solid var(--ink);
+    border-radius: 18px;
+    background: var(--cream);
+    box-shadow: 10px 12px 0 var(--ink);
+    rotate: -1.5deg;
+  }
+
+  .mail__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: var(--line) solid var(--ink);
+    border-radius: 15px 15px 0 0;
+    background: var(--lemon);
+    font: 400 11px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .mail__dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .mail__dots i {
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--cream);
+  }
+
+  .mail__body {
+    padding: clamp(20px, 3vw, 32px);
+  }
+
+  .mail__to {
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgb(27 21 38 / 0.25);
+    font-weight: 650;
+  }
+
+  .mail__to span {
+    color: var(--ink-soft);
+    font: 400 11px/1 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  .mail__msg {
+    margin: 16px 0 20px;
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.5;
+  }
+
+  .mail__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 859px) {
+    .contact {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

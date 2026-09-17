@@ -38,7 +38,7 @@ On desktop, a square lens follows the cursor.
 A diagonal, extruded keyboard drawn as SVG by a tiny 2.5D engine (`src/scripts/iso.ts`):
 an orthographic camera projects each key's base and top face, and the hull of the two becomes the key's body.
 
-- Click or tap a coloured key, or **type the letter on your real keyboard**, to jump to that section.
+- Click or tap a coloured key (A about · P projects · S skills · M milestones · E experience · C contact), or **type the letter on your real keyboard**, to jump to that section.
 - Keys press down and spring back; on desktop they lift on hover and the whole keyboard tilts with the cursor.
 - The missing **G** key grew a garden. Hover (or tap) the watering can.
 - **Spell `hello`** (click the keys or type them) and the keyboard ripples, plays a little tune, the garden blooms
@@ -51,11 +51,34 @@ an orthographic camera projects each key's base and top face, and the hull of th
 Change which letters do what (label, link, colour) in `src/data/keyboard.ts`.
 Camera angles, the popped-out key and the garden's position live in the same file.
 
+## 3. Content (projects, milestones, about)
+
+All content lives in data files, separate from the components that draw it:
+
+| Content | File |
+| --- | --- |
+| Featured projects (floppy disks + case-study pages) and the archive | `src/data/projects.ts` |
+| Milestones / achievements | `src/data/achievements.ts` |
+| About text, education, communities, skill groups | `src/data/profile.ts` |
+| Hero words, nav, contact links | `src/data/site.ts` |
+
+Rules the site follows:
+
+- Anything left out (a missing `oneLiner`, `role`, `stack`, section `body`, link…) shows a styled
+  **"details coming soon"** instead of a guess. Fill the field in and it appears.
+- Links (GitHub, demo, email, LinkedIn, résumé) only render once they're filled in.
+- Each project's `todo` list is a private checklist and never shows on the site.
+- Skills are grouped by hand in `profile.ts`; the "used in …" notes are worked out from project stacks.
+
+Each featured project gets its own page at `/projects/<slug>/`. In browsers that support
+cross-document view transitions, the floppy disk flies from the grid into the disk drive on that page.
+
 ## Where things live
 
 | What | File |
 | --- | --- |
-| Words on the landing page | `src/data/site.ts` |
+| Page order | `src/pages/index.astro` |
+| Case-study page | `src/pages/projects/[slug].astro` |
 | Collage images + hole positions | `src/data/collage.ts` |
 | Collage animation | `src/scripts/hero.ts`, `src/scripts/collage-math.ts` |
 | Keyboard sections, layouts, cameras | `src/data/keyboard.ts` |
@@ -63,12 +86,14 @@ Camera angles, the popped-out key and the garden's position live in the same fil
 | Keyboard interactions + hello | `src/scripts/keyboard.ts` |
 | Click sounds + mute toggle | `src/scripts/sound.ts`, `src/components/SoundToggle.astro` |
 | Keyboard drawing | `src/components/KeyboardScene.astro`, `src/components/Garden.astro` |
-| Section cards (placeholders) | `src/components/Sections.astro` |
-| Colors, type, keycap buttons | `src/styles/global.css` |
+| Sections | `About`, `Projects` (+ archive), `Milestones`, `Communities`, `Skills`, `Contact` in `src/components/` |
+| Shared bits | `SectionHead`, `Badge`, `ComingSoon`, `FloppyDisk` in `src/components/` |
+| Colors, type, keycap buttons, section spacing | `src/styles/global.css` |
 
 ## Next up
 
 - [ ] Real photo + drawing
-- [ ] Real content for about, projects, skills, writing, experience, contact (no invented entries)
+- [ ] Fill in the "coming soon" fields in `src/data/*.ts`
+- [ ] Contact links in `src/data/site.ts`
 - [ ] Collage squares dropping down into the keyboard as keycaps
 - [ ] Blender props rendered as images (monitor, floppy disk, mouse)

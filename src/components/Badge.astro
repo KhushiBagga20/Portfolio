@@ -1,0 +1,39 @@
+---
+import type { Label } from '../data/projects';
+
+interface Props {
+  label: Label;
+}
+
+const colors: Record<Label, string> = {
+  Hackathon: 'var(--lemon)',
+  Recognition: 'var(--tomato)',
+  Ongoing: 'var(--mint)',
+  AI: 'var(--lilac)',
+  'Social impact': '#ffadd0',
+  'Product design': '#bfe0ff',
+  'Native software': 'var(--cream)',
+  'Personal project': 'var(--cream)',
+  Workshop: '#dfe6ff',
+};
+
+const { label } = Astro.props;
+---
+
+<span class="badge" style={`--bg:${colors[label]}`}>{label}</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 8px 4px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 10px/1 var(--font-pixel);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+</style>

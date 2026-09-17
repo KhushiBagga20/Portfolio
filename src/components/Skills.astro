@@ -1,0 +1,76 @@
+---
+import SectionHead from './SectionHead.astro';
+import { skills } from '../data/profile';
+---
+
+<section id="skills" class="section" aria-labelledby="skills-title">
+  <div class="section__inner">
+    <SectionHead
+      eyebrow="skills.cfg"
+      title="tools I've used"
+      id="skills-title"
+      fill="lilac"
+      lede="Pulled straight from the projects above. No percentage bars."
+    />
+
+    <div class="groups">
+      {
+        skills.map((g) => (
+          <div class="group">
+            <h3 class="group__title">{g.title}</h3>
+            <ul class="caps">
+              {g.items.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+            {g.from.length > 0 && <p class="group__from">used in {g.from.join(', ')}</p>}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(28px, 4vw, 44px) clamp(28px, 5vw, 64px);
+    margin-top: 52px;
+  }
+
+  .group__title {
+    margin: 0;
+    font: 400 26px/1.05 var(--font-display);
+  }
+
+  .caps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .caps li {
+    padding: 8px 11px 7px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    background: var(--cream);
+    box-shadow: 0 4px 0 var(--ink);
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  .group__from {
+    margin: 14px 0 0;
+    font: 400 20px/1.15 var(--font-hand);
+  }
+
+  @media (max-width: 759px) {
+    .groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
