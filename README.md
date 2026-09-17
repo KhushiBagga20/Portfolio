@@ -41,6 +41,11 @@ an orthographic camera projects each key's base and top face, and the hull of th
 - Click or tap a coloured key, or **type the letter on your real keyboard**, to jump to that section.
 - Keys press down and spring back; on desktop they lift on hover and the whole keyboard tilts with the cursor.
 - The missing **G** key grew a garden. Hover (or tap) the watering can.
+- **Spell `hello`** (click the keys or type them) and the keyboard ripples, plays a little tune, the garden blooms
+  and a butterfly flies out. A tiny screen echoes what you type. The E key only jumps to its section when it isn't
+  part of "he…", so spelling never gets interrupted. On phones, the ✦ key does the same (and ? drops a hint).
+- **Click sounds** are synthesised live with Web Audio (`src/scripts/sound.ts`): no audio files.
+  Bigger keys thock deeper. The speaker keycap in the nav mutes them, and the choice is remembered.
 - Phones get their own 3×3 key pad instead of a shrunken keyboard.
 
 Change which letters do what (label, link, colour) in `src/data/keyboard.ts`.
@@ -55,7 +60,8 @@ Camera angles, the popped-out key and the garden's position live in the same fil
 | Collage animation | `src/scripts/hero.ts`, `src/scripts/collage-math.ts` |
 | Keyboard sections, layouts, cameras | `src/data/keyboard.ts` |
 | Keyboard geometry | `src/scripts/iso.ts`, `src/scripts/keycap.ts` |
-| Keyboard interactions | `src/scripts/keyboard.ts` |
+| Keyboard interactions + hello | `src/scripts/keyboard.ts` |
+| Click sounds + mute toggle | `src/scripts/sound.ts`, `src/components/SoundToggle.astro` |
 | Keyboard drawing | `src/components/KeyboardScene.astro`, `src/components/Garden.astro` |
 | Section cards (placeholders) | `src/components/Sections.astro` |
 | Colors, type, keycap buttons | `src/styles/global.css` |

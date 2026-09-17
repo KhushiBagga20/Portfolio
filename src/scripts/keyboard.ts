@@ -1,5 +1,6 @@
 import { basis, planeTransform, project, solidPath, type Camera } from './iso';
 import { KEY, keycap } from './keycap';
+import { bloop, keyDown, keyUp } from './sound';
 
 type KeyDef = { id: string; legend: string; cx: number; cy: number; w: number; hole?: boolean };
 type Config = {
@@ -45,6 +46,7 @@ export function initKeyboard(svg: SVGSVGElement) {
       down: 0,
       pointer: false,
       hover: false,
+      spelling: false,
     };
   });
   type Cap = (typeof caps)[number];
@@ -123,8 +125,16 @@ export function initKeyboard(svg: SVGSVGElement) {
     active.add(c);
     kick();
   };
-  const press = (c: Cap) => (c.down++, settle(c));
-  const release = (c: Cap) => ((c.down = Math.max(0, c.down - 1)), settle(c));
+  const press = (c: Cap, silent = false) => {
+    if (!silent) keyDown(c.def.w);
+    c.down++;
+    settle(c);
+  };
+  const release = (c: Cap, silent = false) => {
+    if (!silent) keyUp();
+    c.down = Math.max(0, c.down - 1);
+    settle(c);
+  };
 
   // ── Navigation ─────────────────────────────
   const go = (href: string) => {
@@ -154,6 +164,9 @@ export function initKeyboard(svg: SVGSVGElement) {
     c.el.addEventListener('pointerdown', () => {
       c.pointer = true;
       press(c);
+      c.spelling = input(c.def.id, c);
+      if (c.def.id === 'SPARKLE') celebrate(c);
+      if (c.def.id === 'HELP') hint('psst… tap the ✦');
     });
     const up = () => {
       if (c.pointer) (c.pointer = false), release(c);
@@ -167,6 +180,8 @@ export function initKeyboard(svg: SVGSVGElement) {
           // Activated from the keyboard (Enter): show the press anyway.
           press(c);
           window.setTimeout(() => release(c), 120);
+        } else if (c.spelling) {
+          return; // part-way through spelling "hello" (h → e): stay on the keyboard
         }
         go(c.href!);
       });
@@ -178,6 +193,7 @@ export function initKeyboard(svg: SVGSVGElement) {
   new IntersectionObserver(([entry]) => (visible = entry.isIntersecting), { threshold: 0.35 }).observe(svg);
 
   const held = new Set<string>();
+  const spelledOnDown = new Map<string, boolean>();
   const idOf = (e: KeyboardEvent) => e.key.toUpperCase();
 
   addEventListener('keydown', (e) => {
@@ -185,25 +201,109 @@ export function initKeyboard(svg: SVGSVGElement) {
     if (!MODIFIERS.has(e.key) && (e.metaKey || e.ctrlKey || e.altKey)) return;
     if ((e.target as HTMLElement).closest?.('input, textarea, select, [contenteditable]')) return;
     const id = idOf(e);
+    if (held.has(id)) return;
     const list = byId.get(id);
-    if (!list || held.has(id)) return;
+    spelledOnDown.set(id, input(id, list?.[0]));
+    if (!list) return;
     held.add(id);
-    list.forEach(press);
+    list.forEach((c) => press(c));
   });
 
   addEventListener('keyup', (e) => {
     const id = idOf(e);
     if (!held.delete(id)) return;
     const list = byId.get(id)!;
-    list.forEach(release);
+    list.forEach((c) => release(c));
     const link = list.find((c) => c.href);
-    if (link && visible && !e.metaKey && !e.ctrlKey && !e.altKey) go(link.href!);
+    if (link && visible && !spelledOnDown.get(id) && !e.metaKey && !e.ctrlKey && !e.altKey) go(link.href!);
   });
 
   addEventListener('blur', () => {
-    for (const id of held) byId.get(id)?.forEach(release);
+    for (const id of held) byId.get(id)?.forEach((c) => release(c));
     held.clear();
   });
+
+  // ── Say hello ──────────────────────────────
+  const fly = [...svg.querySelectorAll<SVGAnimationElement>('[data-fly]')];
+  const bubbleText = svg.querySelector('[data-bubble-text]');
+  const screen = section.querySelector<HTMLElement>('[data-screen]');
+  const screenText = section.querySelector<HTMLElement>('[data-typed]');
+  const WORD = 'HELLO';
+  let buffer = '';
+  let idleTimer = 0;
+  let partyUntil = 0;
+  let hintTimer = 0;
+
+  const showBuffer = () => {
+    if (screenText) screenText.textContent = buffer.toLowerCase();
+  };
+
+  /**
+   * Feeds a key into the little screen.
+   * Returns true while the visitor is part-way through spelling "hello",
+   * so a section key (the E) doesn't whisk them away mid-word.
+   */
+  function input(id: string, origin?: Cap): boolean {
+    if (id === 'BACKSPACE') buffer = buffer.slice(0, -1);
+    else if (id === 'ENTER') buffer = '';
+    else if (id === ' ' || /^[A-Z0-9]$/.test(id)) buffer = (buffer + id).slice(-14);
+    else return false;
+
+    window.clearTimeout(idleTimer);
+    idleTimer = window.setTimeout(() => ((buffer = ''), showBuffer()), 4000);
+
+    if (buffer.endsWith(WORD)) {
+      buffer = '';
+      celebrate(origin);
+      return true;
+    }
+    showBuffer();
+    for (let n = WORD.length - 1; n >= 2; n--) if (buffer.endsWith(WORD.slice(0, n))) return true;
+    return false;
+  }
+
+  function hint(text: string) {
+    if (bubbleText) bubbleText.textContent = text;
+    svg.classList.add('is-hint');
+    window.clearTimeout(hintTimer);
+    hintTimer = window.setTimeout(() => svg.classList.remove('is-hint'), 2200);
+  }
+
+  function celebrate(origin?: Cap) {
+    const now = performance.now();
+    if (now < partyUntil) return;
+    partyUntil = now + 2600;
+
+    const ox = origin?.def.cx ?? holeDef?.cx ?? 0;
+    const oy = origin?.def.cy ?? holeDef?.cy ?? 0;
+
+    // A ripple of key presses, with a little rising tune.
+    if (!reduceMotion.matches) {
+      for (const c of caps) {
+        const delay = Math.hypot(c.def.cx - ox, c.def.cy - oy) * 0.5;
+        window.setTimeout(() => {
+          press(c, true);
+          window.setTimeout(() => release(c, true), 110);
+        }, delay);
+      }
+      fly.forEach((a) => a.beginElement());
+    }
+    [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => bloop(f, i * 0.085));
+
+    if (bubbleText) bubbleText.textContent = 'hello to you too!';
+    if (screenText) screenText.textContent = 'hello!! ✦';
+    screen?.classList.remove('is-party');
+    void screen?.offsetWidth;
+    screen?.classList.add('is-party');
+    window.setTimeout(() => {
+      screen?.classList.remove('is-party');
+      showBuffer();
+    }, 2600);
+    svg.classList.remove('is-hint', 'is-hello');
+    void svg.getBoundingClientRect();
+    svg.classList.add('has-bloomed', 'is-hello');
+    window.setTimeout(() => svg.classList.remove('is-hello'), 3600);
+  }
 
   // ── Tilt with the cursor (desktop) ─────────
   section.addEventListener('pointermove', (e) => {

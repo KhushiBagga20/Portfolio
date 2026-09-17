@@ -159,7 +159,7 @@ const config = { camera: scene.camera, keys: scene.keys, plate, popped, gardenSc
   {
     hole && (
       <g data-garden transform={`translate(${gx.toFixed(1)} ${gy.toFixed(1)}) scale(${scene.camera.scale * scene.garden.scale})`}>
-        <Garden id={id} can={scene.garden.can} />
+        <Garden id={id} can={scene.garden.can} bubble={scene.garden.bubble} />
       </g>
     )
   }

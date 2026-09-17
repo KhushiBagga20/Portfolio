@@ -1,5 +1,6 @@
 ---
 import Doodle from './Doodle.astro';
+import SoundToggle from './SoundToggle.astro';
 import { site } from '../data/site';
 ---
 
@@ -8,11 +9,13 @@ import { site } from '../data/site';
     {site.name.toLowerCase()}<span class="logo__spark"><Doodle kind="sparkle" color="var(--pink)" /></span>
   </a>
 
-  <nav class="links" aria-label="Main">
-    {site.nav.map((item) => <a class="key key--nav" href={item.href}>{item.label}</a>)}
-  </nav>
-
-  <button class="key key--nav menu-button" popovertarget="site-menu" aria-label="Open menu">menu</button>
+  <div class="nav__right">
+    <nav class="links" aria-label="Main">
+      {site.nav.map((item) => <a class="key key--nav" href={item.href}>{item.label}</a>)}
+    </nav>
+    <SoundToggle />
+    <button class="key key--nav menu-button" popovertarget="site-menu" aria-label="Open menu">menu</button>
+  </div>
   <nav id="site-menu" class="menu" popover aria-label="Main (mobile)">
     {site.nav.map((item) => <a class="key" href={item.href}>{item.label}</a>)}
   </nav>
@@ -80,6 +83,12 @@ import { site } from '../data/site';
 
   .logo:hover .logo__spark {
     rotate: 90deg;
+  }
+
+  .nav__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .links {
