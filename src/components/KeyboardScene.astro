@@ -1,0 +1,243 @@
+---
+import { basis, depth, planeTransform, project, solidPath } from '../scripts/iso';
+import { KEY, keycap, topSize } from '../scripts/keycap';
+import { sections, tones, type Scene } from '../data/keyboard';
+import Garden from './Garden.astro';
+
+interface Props {
+  scene: Scene;
+  fit?: 'slice' | 'meet';
+  class?: string;
+}
+
+const { scene, fit = 'slice', class: className } = Astro.props;
+const id = scene.name;
+const m = basis(scene.camera);
+const [vw, vh] = scene.viewBox;
+
+const sectionFor = (legend: string) =>
+  legend.length === 1 ? sections.find((s) => s.key === legend.toUpperCase()) : undefined;
+
+const { plate, popped } = scene;
+const pcx = plate.x + plate.w / 2;
+const pcy = plate.y + plate.h / 2;
+const plateFace = { w: plate.w, h: plate.h, r: 46 };
+
+const keys = scene.keys
+  .map((k, i) => ({ ...k, i, sec: k.hole ? undefined : sectionFor(k.legend) }))
+  // Back rows first, then left to right: neighbours always paint in the right order.
+  .sort((a, b) => a.cy - b.cy || depth(m, a.cx, a.cy) - depth(m, b.cx, b.cy));
+const hole = scene.keys.find((k) => k.hole);
+const [gx, gy] = hole ? project(m, hole.cx, hole.cy, 0) : [0, 0];
+
+const popZ = popped.z;
+const popTop = topSize(1);
+const cap = { w: 100 - KEY.gap, h: 100 - KEY.gap };
+
+const config = { camera: scene.camera, keys: scene.keys, plate, popped, gardenScale: scene.garden.scale };
+---
+
+<svg
+  class:list={['kb', `kb--${id}`, className]}
+  viewBox={`0 0 ${vw} ${vh}`}
+  preserveAspectRatio={`xMidYMid ${fit}`}
+  data-kb={JSON.stringify(config)}
+  role="group"
+  aria-label="Keyboard. The coloured keys open sections of the portfolio."
+>
+  <defs>
+    {
+      Object.entries(tones).map(([tone, [, light, dark]]) => (
+        <linearGradient id={`${id}-side-${tone}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color={light} />
+          <stop offset="1" stop-color={dark} />
+        </linearGradient>
+      ))
+    }
+    <linearGradient id={`${id}-plate`} x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0" stop-color="#aebff6"></stop>
+      <stop offset="1" stop-color="#6f86dc"></stop>
+    </linearGradient>
+  </defs>
+
+  <g aria-hidden="true">
+    <path
+      class="plate-body"
+      data-plate-body
+      d={solidPath(m, { cx: pcx, cy: pcy, z0: -KEY.plate, z1: 0, bottom: plateFace, top: plateFace })}
+      fill={`url(#${id}-plate)`}></path>
+    <rect
+      class="plate-top"
+      data-plate-top
+      transform={planeTransform(m, 0, pcx, pcy)}
+      x={-plate.w / 2}
+      y={-plate.h / 2}
+      width={plate.w}
+      height={plate.h}
+      rx="46"></rect>
+
+    <g class="shadows">
+      {
+        keys
+          .filter((k) => !k.hole)
+          .map((k) => {
+            const w = k.w * 100 - KEY.gap;
+            return (
+              <rect
+                data-shadow={k.i}
+                transform={planeTransform(m, 0, k.cx + 6, k.cy + 11)}
+                x={-w / 2}
+                y={-cap.h / 2}
+                width={w}
+                height={cap.h}
+                rx={KEY.r}
+              />
+            );
+          })
+      }
+    </g>
+  </g>
+
+  <g class="keys">
+    {
+      keys.map((k) => {
+        if (k.hole) {
+          return (
+            <g class="hole" data-hole transform={planeTransform(m, 0, k.cx, k.cy)} aria-hidden="true">
+              <rect x={-cap.w / 2} y={-cap.h / 2} width={cap.w} height={cap.h} rx={KEY.r} fill="#4f3324" />
+              <rect x={-cap.w / 2 + 7} y={-cap.h / 2 + 11} width={cap.w - 13} height={cap.h - 16} rx="12" fill="#6e4a33" />
+            </g>
+          );
+        }
+        const tone = k.sec?.tone ?? 'base';
+        const [face, , , ink] = tones[tone];
+        const t = topSize(k.w);
+        const parts = (
+          <Fragment>
+            <path class="k-body" data-body d={solidPath(m, keycap(k.cx, k.cy, k.w, 0, KEY.rest))} fill={`url(#${id}-side-${tone})`} />
+            <g class="k-top" data-top transform={planeTransform(m, KEY.rest, k.cx, k.cy - KEY.back)}>
+              <rect class="k-hi" x={-t.w / 2 - 2.5} y={-t.h / 2 - 3} width={t.w} height={t.h} rx={KEY.rTop} />
+              <rect class="k-face" x={-t.w / 2} y={-t.h / 2} width={t.w} height={t.h} rx={KEY.rTop} fill={face} />
+              {k.legend.length === 1 ? (
+                <text class="k-legend" x="0" y={k.sec ? -7 : 0} dy="0.36em" fill={ink}>
+                  {k.legend}
+                </text>
+              ) : (
+                <text class="k-mod" x={-t.w / 2 + 11} y={t.h / 2 - 13} fill={ink}>
+                  {k.legend}
+                </text>
+              )}
+              {k.sec && (
+                <text
+                  class="k-sub"
+                  x="0"
+                  y="21"
+                  dy="0.36em"
+                  fill={ink}
+                  textLength={k.sec.label.length > 7 ? t.w - 12 : undefined}
+                  lengthAdjust="spacingAndGlyphs"
+                >
+                  {k.sec.label}
+                </text>
+              )}
+            </g>
+          </Fragment>
+        );
+        return k.sec ? (
+          <a class="k k--link" href={k.sec.href} data-key={k.id} data-i={k.i} aria-label={`${k.sec.label} (key ${k.id})`}>
+            {parts}
+          </a>
+        ) : (
+          <g class="k" data-key={k.id} data-i={k.i} aria-hidden="true">
+            {parts}
+          </g>
+        );
+      })
+    }
+  </g>
+
+  {
+    hole && (
+      <g data-garden transform={`translate(${gx.toFixed(1)} ${gy.toFixed(1)}) scale(${scene.camera.scale * scene.garden.scale})`}>
+        <Garden id={id} can={scene.garden.can} />
+      </g>
+    )
+  }
+
+  <g class="popped" data-popped aria-hidden="true">
+    <rect
+      class="popped__shadow"
+      data-pop-shadow
+      transform={planeTransform(m, popZ, popped.cx + 10, popped.cy + 16, popped.rot)}
+      x={-cap.w / 2}
+      y={-cap.h / 2}
+      width={cap.w}
+      height={cap.h}
+      rx={KEY.r}></rect>
+    <path
+      class="k-body"
+      data-pop-body
+      d={solidPath(m, keycap(popped.cx, popped.cy, 1, popZ, popZ + KEY.rest, popped.rot))}
+      fill={`url(#${id}-side-base)`}></path>
+    <g data-pop-top transform={planeTransform(m, popZ + KEY.rest, popped.cx, popped.cy, popped.rot)}>
+      <rect class="k-hi" x={-popTop.w / 2 - 2.5} y={-popTop.h / 2 - 3 - KEY.back} width={popTop.w} height={popTop.h} rx={KEY.rTop}></rect>
+      <rect class="k-face" x={-popTop.w / 2} y={-popTop.h / 2 - KEY.back} width={popTop.w} height={popTop.h} rx={KEY.rTop} fill={tones.base[0]}></rect>
+      <text class="k-legend" x="0" y={-KEY.back} dy="0.36em" fill={tones.base[3]}>{popped.legend}</text>
+    </g>
+  </g>
+</svg>
+
+<style>
+  .kb {
+    display: block;
+    overflow: visible;
+    font-family: var(--font-body);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .plate-top {
+    fill: #cbd8fd;
+  }
+
+  .shadows rect,
+  .popped__shadow {
+    fill: #7f95e0;
+    opacity: 0.38;
+  }
+
+  .k-hi {
+    fill: #fff;
+  }
+
+  .k-legend {
+    font-size: 36px;
+    font-weight: 650;
+    text-anchor: middle;
+  }
+
+  .k-mod {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .k-sub {
+    font-family: var(--font-pixel);
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    text-anchor: middle;
+    text-transform: uppercase;
+  }
+
+  .k {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .k--link:focus-visible .k-face {
+    stroke: var(--ink);
+    stroke-width: 5px;
+  }
+</style>

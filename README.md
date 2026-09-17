@@ -1,6 +1,6 @@
-# kai's little corner of the internet
+# khushi's little corner of the internet
 
-Portfolio of Kai (Khushi Bagga). Astro + TypeScript, no animation libraries.
+Portfolio of Khushi Bagga. Astro + TypeScript, no animation or 3D libraries.
 
 ```bash
 npm install
@@ -11,37 +11,40 @@ npm run build    # static site in dist/
 ## The idea
 
 A scrapbook left inside a candy-colored computer from 1999. The square is the site's one motif:
-windows in the collage → keys on the keyboard → (later) project cards.
+windows in the collage → keys on the keyboard → section cards.
 
-- **Ground:** cream paper `#fff4e2` with a faint blue grid
-- **World:** soft blue `#86b4f7`
-- **Ink:** `#1b1526` for every outline
-- **Accents, used sparingly:** yellow `#ffd23f`, pink `#ff5c9e`, purple `#7f52f5`, cyan `#38d1db`
-- **Type:** Bagel Fat One (name, big moments), Bricolage Grotesque (reading), Delicious Handrawn (notes), Silkscreen (tiny computer labels)
+- **Ground:** periwinkle `#b9c6ff` with a faint white grid
+- **Paper objects:** cream `#fff8ec` with ink `#1b1526` outlines and hard shadows
+- **Accents:** lemon `#ffe14f` to highlight, tomato `#ff6a3d` to act, plus pink, lilac and mint on the keycaps
+- **Type:** Bagel Fat One (big moments), Bricolage Grotesque (reading), Delicious Handrawn (notes), Silkscreen (tiny computer labels)
 
-## The collage (landing page)
+## 1. The collage (landing page)
 
 Your photo sits at the bottom. Your drawing sits on top, with square holes cut in it by CSS masks.
-While the hero is pinned, scrolling plays three acts:
-
-1. **Look closer:** the holes stay put; the photo drifts and zooms under them.
-2. **Open up:** the holes grow and merge until the photo takes over.
-3. **Swap:** new windows open in the photo and show the drawing.
-
-On desktop, a square lens follows the cursor so visitors can peek through themselves.
-With reduced motion turned on, the collage stays still (act 1).
+While the hero is pinned, scrolling plays three acts: **look closer** (the photo drifts under the holes),
+**open up** (the holes merge until the photo takes over), **swap** (new windows open in the photo and show the drawing).
+On desktop, a square lens follows the cursor.
 
 ### Swapping in your own art
 
 1. **Photo** → replace `src/assets/collage/photo.jpg` (portrait, 4:5, e.g. 1600×2000).
 2. **Drawing** → replace `src/assets/collage/illustration.png`.
-   - Draw it **on top of your photo, on the same canvas size**, then hide the photo layer and export with a transparent background.
-   - That's what makes the holes line up: the drawn eye sits exactly over the real eye.
-3. **Holes** → edit `photoWindows` and `drawingWindows` in `src/data/collage.ts`.
-   Coordinates use an 800×1000 grid no matter what size your image is.
-4. Different file type? Change the two `import` lines at the top of `src/data/collage.ts`.
+   Draw it **on top of your photo, on the same canvas size**, then export the drawing alone with a transparent background.
+   That's what makes the holes line up.
+3. **Holes** → edit `photoWindows` and `drawingWindows` in `src/data/collage.ts` (800×1000 grid).
 
-Astro resizes and converts both images to WebP at build time, so big source files are fine.
+## 2. The keyboard
+
+A diagonal, extruded keyboard drawn as SVG by a tiny 2.5D engine (`src/scripts/iso.ts`):
+an orthographic camera projects each key's base and top face, and the hull of the two becomes the key's body.
+
+- Click or tap a coloured key, or **type the letter on your real keyboard**, to jump to that section.
+- Keys press down and spring back; on desktop they lift on hover and the whole keyboard tilts with the cursor.
+- The missing **G** key grew a garden. Hover (or tap) the watering can.
+- Phones get their own 3×3 key pad instead of a shrunken keyboard.
+
+Change which letters do what (label, link, colour) in `src/data/keyboard.ts`.
+Camera angles, the popped-out key and the garden's position live in the same file.
 
 ## Where things live
 
@@ -49,16 +52,17 @@ Astro resizes and converts both images to WebP at build time, so big source file
 | --- | --- |
 | Words on the landing page | `src/data/site.ts` |
 | Collage images + hole positions | `src/data/collage.ts` |
-| Collage animation (acts, lens, intro) | `src/scripts/hero.ts` |
-| Mask math | `src/scripts/collage-math.ts` |
-| Landing layout (desktop + mobile) | `src/components/Hero.astro` |
-| Stickers (star, sparkle, cursor…) | `src/components/Doodle.astro` |
+| Collage animation | `src/scripts/hero.ts`, `src/scripts/collage-math.ts` |
+| Keyboard sections, layouts, cameras | `src/data/keyboard.ts` |
+| Keyboard geometry | `src/scripts/iso.ts`, `src/scripts/keycap.ts` |
+| Keyboard interactions | `src/scripts/keyboard.ts` |
+| Keyboard drawing | `src/components/KeyboardScene.astro`, `src/components/Garden.astro` |
+| Section cards (placeholders) | `src/components/Sections.astro` |
 | Colors, type, keycap buttons | `src/styles/global.css` |
-| Keyboard placeholder | `src/components/NextUp.astro` |
 
 ## Next up
 
 - [ ] Real photo + drawing
-- [ ] The keyboard (built in code, not Blender): the collage's squares drop down and become keys
-- [ ] About, projects, skills, writing, experience, contact (real content only, no invented entries)
+- [ ] Real content for about, projects, skills, writing, experience, contact (no invented entries)
+- [ ] Collage squares dropping down into the keyboard as keycaps
 - [ ] Blender props rendered as images (monitor, floppy disk, mouse)

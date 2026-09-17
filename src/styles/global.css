@@ -1,21 +1,35 @@
 /* ─────────────────────────────────────────────
-   Kai's world: tokens
-   One ground (paper), one world color (blue),
-   black ink, and four loud accents used sparingly.
+   Khushi's world: tokens
+   Periwinkle ground, cream paper objects, black ink,
+   lemon to highlight, tomato to act. Garden colours
+   only live in the keyboard.
    ───────────────────────────────────────────── */
 :root {
-  --paper: #fff4e2;
-  --paper-deep: #f6e2c2;
+  /* ground */
+  --paper: #b9c6ff;
+  --paper-deep: #a7b5fb;
+  --grid: rgb(255 255 255 / 0.26);
+
+  /* ink + paper objects (the photo frame uses these; keep them stable) */
   --ink: #1b1526;
   --ink-soft: #4d4660;
+  --cream: #fff8ec;
+  --pink: #ff5c9e;
+
+  /* accents */
+  --lemon: #ffe14f;
+  --tomato: #ff6a3d;
+  --lilac: #cbb8ff;
+  --mint: #7fe0b0;
+  --text-soft: #2f2a47;
+
+  /* older names, still used by stickers */
+  --yellow: var(--lemon);
+  --purple: #7f52f5;
+  --cyan: #38d1db;
   --blue: #86b4f7;
   --blue-deep: #4f6fe3;
   --blue-pale: #dce8ff;
-  --yellow: #ffd23f;
-  --pink: #ff5c9e;
-  --purple: #7f52f5;
-  --cyan: #38d1db;
-  --cream: #fff8ec;
 
   --font-display: 'Bagel Fat One', 'Arial Rounded MT Bold', system-ui, sans-serif;
   --font-body: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
@@ -45,8 +59,8 @@ body {
   min-height: 100svh;
   background-color: var(--paper);
   background-image:
-    linear-gradient(rgb(79 111 227 / 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(79 111 227 / 0.08) 1px, transparent 1px);
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 28px 28px;
   color: var(--ink);
   font-family: var(--font-body);
@@ -67,7 +81,7 @@ a {
 }
 
 ::selection {
-  background: var(--yellow);
+  background: var(--lemon);
   color: var(--ink);
 }
 
@@ -137,6 +151,10 @@ a {
 
 .key--pink {
   --key-face: var(--pink);
+}
+
+.key--tomato {
+  --key-face: var(--tomato);
 }
 
 .key--yellow {

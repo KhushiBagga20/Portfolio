@@ -18,13 +18,13 @@ export type Hole = { cx: number; cy: number; s: number };
 export const collage = {
   photo: {
     src: photo,
-    alt: 'A photo of Kai (placeholder)',
-    file: 'kai_real.jpg',
+    alt: 'A photo of Khushi (placeholder)',
+    file: 'khushi_real.jpg',
   },
   illustration: {
     src: illustration,
-    alt: 'A drawing of Kai, traced over the same photo (placeholder)',
-    file: 'kai_drawn.png',
+    alt: 'A drawing of Khushi, traced over the same photo (placeholder)',
+    file: 'khushi_drawn.png',
   },
 
   // Colour of the paper the drawing sits on (shows behind a transparent PNG).
