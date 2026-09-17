@@ -47,7 +47,7 @@ export type Scene = {
   keys: KeyDef[];
   plate: { x: number; y: number; w: number; h: number };
   popped: { legend: string; cx: number; cy: number; rot: number; z: number };
-  garden: { scale: number; can: [x: number, y: number, flip: boolean] };
+  garden: { scale: number; can: [x: number, y: number, flip: boolean]; bubble: [x: number, y: number] };
 };
 
 const PITCH = 100;
@@ -87,7 +87,7 @@ export const desk: Scene = {
   keys: deskKeys,
   plate: { x: -30, y: -30, w: 1560, h: 560 },
   popped: { legend: 'G', cx: 700, cy: 395, rot: 28, z: 30 },
-  garden: { scale: 1.15, can: [168, 64, true] },
+  garden: { scale: 1.15, can: [168, 64, true], bubble: [74, -268] },
 };
 
 // The garden sits in the back corner so the plant grows into empty sky, not over keys.
@@ -104,5 +104,5 @@ export const pad: Scene = {
   keys: padKeys,
   plate: { x: -26, y: -26, w: 352, h: 352 },
   popped: { legend: 'G', cx: 400, cy: 250, rot: -20, z: -KEY_PLATE },
-  garden: { scale: 0.8, can: [-150, 46, false] },
+  garden: { scale: 0.8, can: [-150, 46, false], bubble: [58, -214] },
 };

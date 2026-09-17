@@ -12,10 +12,17 @@ import { desk, pad, sections } from '../data/keyboard';
   <div class="head">
     <p class="eyebrow">chapter 02 · explore</p>
     <h2 id="keyboard-title">press a key</h2>
+    <div class="screen" data-screen aria-hidden="true">
+      <span class="screen__prompt">&gt;</span>
+      <span class="screen__text" data-typed></span>
+      <span class="screen__cursor"></span>
+    </div>
     <p class="hint hint--desk">
       or type {sections.map((s) => <kbd>{s.key}</kbd>)} on your own keyboard
     </p>
+    <p class="hint hint--desk psst">(psst… spell hello)</p>
     <p class="hint hint--pad">tap a colourful key</p>
+    <p class="hint hint--pad psst">(psst… the ✦ key does something)</p>
   </div>
 </section>
 
@@ -77,6 +84,70 @@ import { desk, pad, sections } from '../data/keyboard';
       0.065em 0.08em 0 var(--tomato);
   }
 
+  .screen {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: min(320px, 100%);
+    height: 48px;
+    margin-top: 18px;
+    padding: 0 16px;
+    border: var(--line) solid var(--ink);
+    border-radius: 12px;
+    background: #211b36;
+    box-shadow:
+      inset 0 0 0 4px #302a4d,
+      0 5px 0 var(--ink);
+    color: var(--mint);
+    font: 400 16px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 10px rgb(127 224 176 / 0.55);
+  }
+
+  .screen__prompt {
+    color: var(--lemon);
+  }
+
+  .screen__text {
+    overflow: hidden;
+    white-space: pre;
+  }
+
+  .screen__cursor {
+    flex: none;
+    width: 10px;
+    height: 18px;
+    background: currentColor;
+    animation: cursor 1s steps(2, jump-none) infinite;
+  }
+
+  @keyframes cursor {
+    to {
+      opacity: 0;
+    }
+  }
+
+  .screen.is-party {
+    animation: party 0.5s linear 5;
+  }
+
+  .screen.is-party .screen__text {
+    color: var(--lemon);
+  }
+
+  @keyframes party {
+    0%,
+    100% {
+      border-color: var(--pink);
+    }
+    33% {
+      border-color: var(--lemon);
+    }
+    66% {
+      border-color: var(--mint);
+    }
+  }
+
   .hint {
     margin: 14px 0 0;
     font: 400 24px/1.3 var(--font-hand);
@@ -84,6 +155,14 @@ import { desk, pad, sections } from '../data/keyboard';
 
   .hint--pad {
     display: none;
+  }
+
+  .psst {
+    margin-top: 2px;
+    font-size: 19px;
+    opacity: 0.75;
+    rotate: -2deg;
+    width: max-content;
   }
 
   kbd {
