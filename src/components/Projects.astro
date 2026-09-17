@@ -1,0 +1,358 @@
+---
+import Badge from './Badge.astro';
+import ComingSoon from './ComingSoon.astro';
+import FloppyDisk from './FloppyDisk.astro';
+import SectionHead from './SectionHead.astro';
+import { archive, projects } from '../data/projects';
+
+const tilts = [-4, 3, -2, 4, -3, 2];
+---
+
+<section id="projects" class="section section--deep" aria-labelledby="projects-title">
+  <div class="section__inner">
+    <SectionHead
+      eyebrow="projects/ · featured"
+      title="things I've built"
+      id="projects-title"
+      lede="Each disk holds one project. Open one to read the case study."
+    />
+
+    <ul class="disks">
+      {
+        projects.map((p, i) => {
+          const href = `/projects/${p.slug}/`;
+          return (
+            <li class="card">
+              <a class="card__disk" href={href} tabindex="-1" aria-hidden="true" style={`--r:${tilts[i % tilts.length]}deg`}>
+                <span class="vt-disk" style={`--vt: disk-${p.slug}`}>
+                  <FloppyDisk tone={p.disk.tone} scribble={p.disk.scribble} />
+                </span>
+              </a>
+
+              <div class="card__body">
+                <p class="card__type">{[p.type, p.event].filter(Boolean).join(' · ')}</p>
+                <h3 class="card__name">{p.name}</h3>
+                {p.outcome && (
+                  <ul class="card__outcome" aria-label="Result">
+                    {p.outcome.map((o) => (
+                      <li>{o}</li>
+                    ))}
+                  </ul>
+                )}
+                {p.oneLiner ? <p class="card__line">{p.oneLiner}</p> : <ComingSoon text="write-up coming soon" />}
+                {p.preview && <p class="card__preview">{p.preview}</p>}
+                <div class="badges">
+                  {p.labels.map((l) => (
+                    <Badge label={l} />
+                  ))}
+                </div>
+                <a class="key key--sm card__open" href={href}>
+                  open case study<span class="sr-only">: {p.name}</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <div class="archive">
+      <p class="eyebrow">archive/</p>
+      <h3 class="archive__title">more things I built</h3>
+      <ul class="notes">
+        {
+          archive.map((a, i) => (
+            <li class="note" style={`--r:${[1.2, -1, 0.8][i % 3]}deg`}>
+              <span class="note__tape" aria-hidden="true" />
+              <p class="card__type">{a.type}</p>
+              <h4 class="note__name">{a.name}</h4>
+              {a.description && <p class="note__desc">{a.description}</p>}
+              {a.points ? (
+                <ul class="note__points">
+                  {a.points.map((pt) => (
+                    <li>{pt}</li>
+                  ))}
+                </ul>
+              ) : (
+                <ComingSoon />
+              )}
+              {a.stack && <p class="note__stack">{a.stack.join(' · ')}</p>}
+              <div class="badges">
+                {a.labels.map((l) => (
+                  <Badge label={l} />
+                ))}
+              </div>
+              {(a.links.github || a.links.demo) && (
+                <div class="note__links">
+                  {a.links.github && (
+                    <a class="key key--sm" href={a.links.github}>
+                      GitHub
+                    </a>
+                  )}
+                  {a.links.demo && (
+                    <a class="key key--sm" href={a.links.demo}>
+                      Demo
+                    </a>
+                  )}
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ── Featured disks ─────────────────── */
+  .disks {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 84px 30px;
+    margin: 96px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 104px 22px 22px;
+    border: var(--line) solid var(--ink);
+    border-radius: 20px;
+    background: var(--cream);
+    box-shadow: 8px 9px 0 var(--ink);
+  }
+
+  .card__disk {
+    position: absolute;
+    top: -56px;
+    left: 18px;
+    width: 146px;
+    rotate: var(--r);
+    transition:
+      translate 0.45s var(--spring),
+      rotate 0.45s var(--spring);
+  }
+
+  .card__disk .vt-disk {
+    display: block;
+  }
+
+  .card:hover .card__disk,
+  .card:focus-within .card__disk {
+    translate: 0 -10px;
+    rotate: calc(var(--r) - 6deg);
+  }
+
+  .card:hover :global(.disk__shutter),
+  .card:focus-within :global(.disk__shutter) {
+    transform: translateX(26px);
+  }
+
+  .card__outcome {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 2px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card__outcome li {
+    padding: 5px 8px 4px;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    background: var(--lemon);
+    box-shadow: 2px 2px 0 var(--ink);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .card__outcome li:nth-child(2) {
+    rotate: -2deg;
+    background: var(--mint);
+  }
+
+  .card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card__type {
+    margin: 0;
+    color: var(--ink-soft);
+    font: 400 10px/1.4 var(--font-pixel);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .card__name {
+    margin: 6px 0 0;
+    font: 400 clamp(30px, 2.6vw, 38px) / 1 var(--font-display);
+  }
+
+  .card__line {
+    margin: 10px 0 0;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+
+  .card__body > :global(.soon) {
+    margin-top: 12px;
+  }
+
+  .card__preview {
+    margin: 8px 0 0;
+    color: var(--text-soft);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0 0;
+  }
+
+  .card__open {
+    margin-top: auto;
+  }
+
+  .card__body .badges {
+    margin-bottom: 20px;
+  }
+
+  /* ── Archive ────────────────────────── */
+  .archive {
+    margin-top: clamp(88px, 10vw, 140px);
+  }
+
+  .eyebrow {
+    margin: 0;
+    font: 400 11px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .archive__title {
+    margin: 10px 0 0;
+    font: 400 clamp(30px, 3vw, 44px) / 1 var(--font-display);
+  }
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin: 36px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .note {
+    position: relative;
+    padding: 26px 20px 20px;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    background:
+      linear-gradient(transparent 30px, rgb(79 111 227 / 0.14) 30px 31px, transparent 31px) 0 14px / 100% 28px,
+      var(--cream);
+    box-shadow: 5px 6px 0 var(--ink);
+    rotate: var(--r);
+  }
+
+  .note__tape {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    width: 84px;
+    height: 24px;
+    background: rgb(203 184 255 / 0.85);
+    translate: -50% 0;
+    rotate: -3deg;
+  }
+
+  .note__name {
+    margin: 6px 0 0;
+    font: 400 24px/1.05 var(--font-display);
+  }
+
+  .note__desc {
+    margin: 10px 0 0;
+    font-weight: 600;
+  }
+
+  .note__points {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: var(--text-soft);
+    font-size: 15px;
+  }
+
+  .note__points li + li {
+    margin-top: 4px;
+  }
+
+  .note > :global(.soon) {
+    margin-top: 12px;
+  }
+
+  .note__stack {
+    margin: 12px 0 0;
+    font: 400 10px/1.5 var(--font-pixel);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .note .badges {
+    margin-top: 12px;
+  }
+
+  .note__links {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  @media (max-width: 1023px) {
+    .disks {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .notes {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 640px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .disks {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 72px;
+      margin-top: 80px;
+    }
+
+    .card {
+      padding-top: 84px;
+    }
+
+    .card__disk {
+      top: -46px;
+      width: 118px;
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card__disk {
+      transition: none;
+    }
+  }
+</style>

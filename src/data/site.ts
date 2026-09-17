@@ -15,11 +15,12 @@ export const site = {
   intro: 'I build things, explore ideas, and occasionally make the internet weird.',
   currently: 'currently: building this website',
 
+  // Absolute (/#…) so they also work from project pages.
   nav: [
-    { label: 'about', href: '#about' },
-    { label: 'projects', href: '#projects' },
-    { label: 'writing', href: '#writing' },
-    { label: 'contact', href: '#contact' },
+    { label: 'about', href: '/#about' },
+    { label: 'projects', href: '/#projects' },
+    { label: 'milestones', href: '/#milestones' },
+    { label: 'contact', href: '/#contact' },
   ],
 
   // TODO: real links once the contact section exists.

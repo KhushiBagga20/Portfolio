@@ -15,7 +15,7 @@ export const sections: { key: string; label: string; href: string; tone: Tone }[
   { key: 'A', label: 'about', href: '#about', tone: 'lemon' },
   { key: 'P', label: 'projects', href: '#projects', tone: 'tomato' },
   { key: 'S', label: 'skills', href: '#skills', tone: 'lilac' },
-  { key: 'W', label: 'writing', href: '#writing', tone: 'mint' },
+  { key: 'M', label: 'milestones', href: '#milestones', tone: 'mint' },
   { key: 'E', label: 'experience', href: '#experience', tone: 'pink' },
   { key: 'C', label: 'contact', href: '#contact', tone: 'cream' },
 ];
@@ -93,7 +93,7 @@ export const desk: Scene = {
 // The garden sits in the back corner so the plant grows into empty sky, not over keys.
 const padKeys = [
   ...row(0, [['G', 1], ['A', 1], ['P', 1]]),
-  ...row(1, [['S', 1], ['W', 1], ['E', 1]]),
+  ...row(1, [['S', 1], ['M', 1], ['E', 1]]),
   ...row(2, [['C', 1], ['✦', 1, 'SPARKLE'], ['?', 1, 'HELP']]),
 ].map((k) => (k.id === 'G' ? { ...k, hole: true } : k));
 
