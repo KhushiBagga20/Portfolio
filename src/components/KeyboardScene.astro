@@ -118,26 +118,28 @@ const config = { camera: scene.camera, keys: scene.keys, plate, popped, gardenSc
             <g class="k-top" data-top transform={planeTransform(m, KEY.rest, k.cx, k.cy - KEY.back)}>
               <rect class="k-hi" x={-t.w / 2 - 2.5} y={-t.h / 2 - 3} width={t.w} height={t.h} rx={KEY.rTop} />
               <rect class="k-face" x={-t.w / 2} y={-t.h / 2} width={t.w} height={t.h} rx={KEY.rTop} fill={face} />
-              {k.legend.length === 1 ? (
-                <text class="k-legend" x="0" y={k.sec ? -7 : 0} dy="0.36em" fill={ink}>
+              {k.sec ? (
+                // One text element with a real space, so the visible label reads "A about" like its link name.
+                <text fill={ink}>
+                  <tspan class="k-legend" x="0" y="-7" dy="0.36em">{k.legend}</tspan>{' '}
+                  <tspan
+                    class="k-sub"
+                    x="0"
+                    y="21"
+                    dy="0.36em"
+                    textLength={k.sec.label.length > 7 ? t.w - 12 : undefined}
+                    lengthAdjust="spacingAndGlyphs"
+                  >
+                    {k.sec.label}
+                  </tspan>
+                </text>
+              ) : k.legend.length === 1 ? (
+                <text class="k-legend" x="0" y="0" dy="0.36em" fill={ink}>
                   {k.legend}
                 </text>
               ) : (
                 <text class="k-mod" x={-t.w / 2 + 11} y={t.h / 2 - 13} fill={ink}>
                   {k.legend}
-                </text>
-              )}
-              {k.sec && (
-                <text
-                  class="k-sub"
-                  x="0"
-                  y="21"
-                  dy="0.36em"
-                  fill={ink}
-                  textLength={k.sec.label.length > 7 ? t.w - 12 : undefined}
-                  lengthAdjust="spacingAndGlyphs"
-                >
-                  {k.sec.label}
                 </text>
               )}
             </g>
