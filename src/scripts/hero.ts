@@ -91,7 +91,7 @@ export function initHero(hero: HTMLElement) {
   let tilt = 0;
 
   const readScroll = () => {
-    if (reduceMotion.matches) return (state.pTarget = 0);
+    if (reduceMotion.matches) return; // the act buttons drive it instead
     const rect = hero.getBoundingClientRect();
     const travel = rect.height - window.innerHeight;
     state.pTarget = travel > 0 ? clamp(-rect.top / travel) : 0;
@@ -209,6 +209,16 @@ export function initHero(hero: HTMLElement) {
   const kick = () => {
     if (!raf) raf = requestAnimationFrame(tick);
   };
+
+  // Reduced motion: no scroll-driven acts, just buttons that jump between them.
+  const actButtons = [...hero.querySelectorAll<HTMLButtonElement>('[data-act-to]')];
+  actButtons.forEach((button) =>
+    button.addEventListener('click', () => {
+      state.pTarget = state.p = Number(button.dataset.actTo);
+      actButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+      kick();
+    }),
+  );
 
   // Scroll → progress.
   addEventListener('scroll', () => (readScroll(), kick()), { passive: true });

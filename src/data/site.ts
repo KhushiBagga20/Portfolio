@@ -23,11 +23,10 @@ export const site = {
     { label: 'contact', href: '/#contact' },
   ],
 
-  // TODO: real links once the contact section exists.
   links: {
-    email: '',
-    github: '',
-    linkedin: '',
-    resume: '',
+    email: 'khushixbagga@gmail.com',
+    github: 'https://github.com/KhushiBagga20',
+    linkedin: 'https://www.linkedin.com/in/khushi-bagga-26734a279/',
+    resume: '/Khushi_Bagga_Resume.pdf', // lives in public/
   },
 };

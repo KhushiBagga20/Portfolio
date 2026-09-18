@@ -1,0 +1,150 @@
+---
+// The link-preview card (1200 × 630). Not a real page: `npm run og` screenshots it into public/og.png.
+import '@fontsource/bagel-fat-one/latin-400.css';
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource/silkscreen/latin-400.css';
+import '@fontsource/delicious-handrawn/latin-400.css';
+import '../styles/global.css';
+import Collage from '../components/Collage.astro';
+import Doodle from '../components/Doodle.astro';
+import { site } from '../data/site';
+
+const [first, ...rest] = site.headline.split(', ');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>link preview</title>
+  </head>
+  <body>
+    <div class="og">
+      <div class="copy">
+        <p class="hello">{site.hello}</p>
+        <p class="name">
+          {[...site.name.toUpperCase()].map((ch, i) => <span style={`--r:${[-4, 3, -2, 4, -3, 2][i % 6]}deg`}>{ch}</span>)}
+        </p>
+        <p class="headline">{first},<br /><mark>{rest.join(', ')}</mark></p>
+        <p class="meta"><span>{site.tag}</span>{site.fullName} · {site.program}</p>
+      </div>
+      <div class="art">
+        <Collage />
+        <span class="s-star"><Doodle kind="star" color="var(--yellow)" seed={7} /></span>
+        <span class="s-spark"><Doodle kind="sparkle" color="var(--pink)" /></span>
+        <span class="s-squiggle"><Doodle kind="squiggle" color="var(--cyan)" /></span>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .og {
+    display: grid;
+    grid-template-columns: 1fr 390px;
+    align-items: center;
+    gap: 40px;
+    width: 1200px;
+    height: 630px;
+    padding: 0 84px 0 72px;
+  }
+
+  .hello {
+    margin: 0 0 -8px 8px;
+    font: 400 40px/1 var(--font-hand);
+    rotate: -7deg;
+    width: max-content;
+  }
+
+  .name {
+    margin: 0;
+    font: 400 150px/0.9 var(--font-display);
+  }
+
+  .name span {
+    display: inline-block;
+    color: var(--lemon);
+    -webkit-text-stroke: 0.07em var(--ink);
+    paint-order: stroke fill;
+    text-shadow:
+      0.035em 0.045em 0 var(--ink),
+      0.065em 0.08em 0 var(--tomato);
+    rotate: var(--r);
+  }
+
+  .headline {
+    margin: 26px 0 0;
+    font-size: 44px;
+    font-weight: 780;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .headline mark {
+    padding: 0 0.08em;
+    background: linear-gradient(transparent 55%, var(--lemon) 55%, var(--lemon) 92%, transparent 92%);
+    color: inherit;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 22px 0 0;
+    color: var(--text-soft);
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .meta span {
+    padding: 4px 8px 3px;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    background: var(--cream);
+    color: var(--ink);
+    font: 400 11px/1 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  .art {
+    position: relative;
+  }
+
+  .art > span {
+    position: absolute;
+    display: block;
+  }
+
+  .art :global(svg) {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .s-star {
+    top: -40px;
+    left: -52px;
+    z-index: 3;
+    width: 104px;
+    rotate: 14deg;
+  }
+
+  .s-spark {
+    top: 70px;
+    right: -34px;
+    width: 46px;
+  }
+
+  .s-squiggle {
+    right: -44px;
+    bottom: 60px;
+    width: 96px;
+    rotate: -12deg;
+  }
+</style>

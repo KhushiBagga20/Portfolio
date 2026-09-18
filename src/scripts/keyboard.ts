@@ -305,6 +305,14 @@ export function initKeyboard(svg: SVGSVGElement) {
     window.setTimeout(() => svg.classList.remove('is-hello'), 3600);
   }
 
+  // The hand-off (handoff.ts) lands a square on a key: give it a silent little bounce.
+  svg.addEventListener('kb:bump', (e) => {
+    byId.get((e as CustomEvent<string>).detail)?.forEach((c) => {
+      press(c, true);
+      window.setTimeout(() => release(c, true), 120);
+    });
+  });
+
   // ── Tilt with the cursor (desktop) ─────────
   section.addEventListener('pointermove', (e) => {
     if (!finePointer.matches || reduceMotion.matches) return;

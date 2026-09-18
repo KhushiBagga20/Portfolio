@@ -46,6 +46,12 @@ const wobble = [-4, 3, -2, 4, -3, 2];
 
       <Collage />
 
+      <div class="acts" role="group" aria-label="Collage view">
+        <button class="key key--sm" type="button" data-act-to="0" aria-pressed="true">drawn</button>
+        <button class="key key--sm" type="button" data-act-to="0.7" aria-pressed="false">real</button>
+        <button class="key key--sm" type="button" data-act-to="1" aria-pressed="false">both</button>
+      </div>
+
       <span class="sticker s-star" style="--d:1.4"><Doodle kind="star" color="var(--yellow)" seed={7} /></span>
       <span class="sticker s-spark-pink" style="--d:-1"><Doodle kind="sparkle" color="var(--pink)" /></span>
       <span class="sticker s-spark-cream" style="--d:0.8"><Doodle kind="sparkle" color="var(--cream)" /></span>
@@ -313,6 +319,24 @@ const wobble = [-4, 3, -2, 4, -3, 2];
     right: -44px;
     width: 46px;
     rotate: 22deg;
+  }
+
+  /* With reduced motion the collage doesn't play on scroll; these flip between its three states instead. */
+  .acts {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .acts {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .acts .key[aria-pressed='true'] {
+      --key-face: var(--lemon);
+    }
   }
 
   /* ── Scroll hint ────────────────────── */

@@ -46,15 +46,13 @@ const tilts = [-3, 2, -1, 3, -2, 1, -3];
             <dt>focus</dt>
             <dd>{education.focus}</dd>
           </div>
-          <div class="id__pair">
-            <div>
-              <dt>expected grad</dt>
-              <dd>{education.graduation}</dd>
-            </div>
-            <div>
-              <dt>cgpa</dt>
-              <dd>{education.cgpa}</dd>
-            </div>
+          <div class="id__half">
+            <dt>expected grad</dt>
+            <dd>{education.graduation}</dd>
+          </div>
+          <div class="id__half">
+            <dt>cgpa</dt>
+            <dd>{education.cgpa}</dd>
           </div>
         </dl>
       </div>
@@ -177,14 +175,13 @@ const tilts = [-3, 2, -1, 3, -2, 1, -3];
 
   .id__facts {
     display: grid;
-    gap: 9px;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px 10px;
     margin: 0;
   }
 
-  .id__pair {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  .id__facts > div:not(.id__half) {
+    grid-column: 1 / -1;
   }
 
   dt {

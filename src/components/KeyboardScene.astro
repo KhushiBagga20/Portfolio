@@ -144,7 +144,7 @@ const config = { camera: scene.camera, keys: scene.keys, plate, popped, gardenSc
           </Fragment>
         );
         return k.sec ? (
-          <a class="k k--link" href={k.sec.href} data-key={k.id} data-i={k.i} aria-label={`${k.sec.label} (key ${k.id})`}>
+          <a class="k k--link" href={k.sec.href} data-key={k.id} data-i={k.i} aria-label={`${k.legend} ${k.sec.label}`}>
             {parts}
           </a>
         ) : (

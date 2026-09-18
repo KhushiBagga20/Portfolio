@@ -73,6 +73,18 @@ Rules the site follows:
 Each featured project gets its own page at `/projects/<slug>/`. In browsers that support
 cross-document view transitions, the floppy disk flies from the grid into the disk drive on that page.
 
+## 4. Sharing, 404 and the little extras
+
+- **Link preview image** (`public/og.png`): what LinkedIn/WhatsApp/iMessage show when the link is shared.
+  It's a screenshot of the `/og/` page. After changing your photo, drawing or headline, run `npm run dev`
+  and then `npm run og` to regenerate it. Once the site has a domain, set `site` in `astro.config.mjs`
+  so previews use absolute URLs.
+- **404 page**: `src/pages/404.astro` ("disk not found").
+- **Hand-off** (`src/scripts/handoff.ts`): on desktop, six squares lift out of the collage as you scroll
+  and land on the coloured keys. It only reads the collage; it never changes it.
+- **Reduced motion**: the collage doesn't play on scroll; "drawn / real / both" buttons switch it instead.
+- **Contact** links and the résumé live in `src/data/site.ts` and `public/`.
+
 ## Where things live
 
 | What | File |
