@@ -44,6 +44,15 @@ export function planeTransform(m: Basis, z: number, cx = 0, cy = 0, rot = 0): st
   return `matrix(${f(A)} ${f(B)} ${f(C)} ${f(D)} ${f(E)} ${f(F)})`;
 }
 
+/**
+ * SVG transform for an upright wall facing the viewer (the plane y = const), e.g. a monitor's screen.
+ * Local x runs along the wall (centred on cx); local y runs *down* from height zTop.
+ */
+export function wallTransform(m: Basis, y: number, zTop: number, cx = 0): string {
+  const [E, F] = project(m, cx, y, zTop);
+  return `matrix(${f(m.a)} ${f(m.b)} 0 ${f(-m.zy)} ${f(E)} ${f(F)})`;
+}
+
 export type Face = { w: number; h: number; r: number; dy?: number };
 
 function outline({ w, h, r, dy = 0 }: Face, segs = 5): Pt[] {

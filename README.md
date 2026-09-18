@@ -80,8 +80,6 @@ cross-document view transitions, the floppy disk flies from the grid into the di
   and then `npm run og` to regenerate it. Once the site has a domain, set `site` in `astro.config.mjs`
   so previews use absolute URLs.
 - **404 page**: `src/pages/404.astro` ("disk not found").
-- **Hand-off** (`src/scripts/handoff.ts`): on desktop, six squares lift out of the collage as you scroll
-  and land on the coloured keys. It only reads the collage; it never changes it.
 - **Reduced motion**: the collage doesn't play on scroll; "drawn / real / both" buttons switch it instead.
 - **Contact** links and the résumé live in `src/data/site.ts` and `public/`.
 

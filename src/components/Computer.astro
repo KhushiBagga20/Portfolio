@@ -1,0 +1,287 @@
+---
+// A chunky candy-coloured CRT with a floppy sticking out of its drive.
+// Drawn with the same little 2.5D engine as the keyboard (src/scripts/iso.ts).
+// The floppy is a real link (the résumé); the screen text is decorative.
+import { basis, planeTransform, project, solidPath, wallTransform } from '../scripts/iso';
+
+interface Props {
+  resume?: string;
+  lines?: string[];
+}
+
+const { resume, lines = ['khushi os v1.0', '> say hi', '> grab the floppy ↓'] } = Astro.props;
+
+// ── Geometry (plane px, 100 = one keycap) ─────────
+const BODY = { w: 360, d: 300, r: 22, z0: 34, z1: 324 };
+const BASE = { w: 230, d: 200, r: 34, z0: 0, z1: 34 };
+const TUBE = { w: 250, d: 170, r: 40, z0: 88, z1: 278, cy: -BODY.d / 2 - 70 }; // the CRT's deep back
+const FRONT = BODY.d / 2; // the screen wall is the plane y = FRONT
+const SLOT = { u0: -30, u1: 120, w0: 226, w1: 236 }; // on the wall, w measured down from the top
+const slotTopZ = BODY.z1 - SLOT.w0;
+const DISK = { w: 134, d: 134, cx: 45, cy: FRONT - 5, z0: slotTopZ - 8, z1: slotTopZ - 1 };
+const EJECT = 24;
+
+// ── Camera: fit everything into the viewBox ───────
+const VB: [number, number] = [560, 500];
+const PAD = 18;
+const angles = { yaw: 28, pitch: 30 };
+const m0 = basis({ ...angles, scale: 1, x: 0, y: 0 });
+const probe: [number, number][] = [];
+for (const [x, y] of [
+  [-BODY.w / 2, -BODY.d / 2],
+  [BODY.w / 2, -BODY.d / 2],
+  [BODY.w / 2, BODY.d / 2],
+  [-BODY.w / 2, BODY.d / 2],
+]) {
+  probe.push(project(m0, x, y, 0), project(m0, x, y, BODY.z1));
+}
+probe.push(project(m0, TUBE.w / 2, TUBE.cy - TUBE.d / 2, TUBE.z1), project(m0, -TUBE.w / 2, TUBE.cy - TUBE.d / 2, TUBE.z1));
+probe.push(project(m0, DISK.cx + DISK.w / 2, DISK.cy + DISK.d / 2 + EJECT, DISK.z0));
+const xs = probe.map((p) => p[0]);
+const ys = probe.map((p) => p[1]);
+const scale = Math.min((VB[0] - PAD * 2) / (Math.max(...xs) - Math.min(...xs)), (VB[1] - PAD * 2) / (Math.max(...ys) - Math.min(...ys)));
+const cam = {
+  ...angles,
+  scale,
+  x: VB[0] / 2 - ((Math.min(...xs) + Math.max(...xs)) / 2) * scale,
+  y: VB[1] / 2 - ((Math.min(...ys) + Math.max(...ys)) / 2) * scale,
+};
+const m = basis(cam);
+
+const box = (b: { w: number; d: number; r: number; z0: number; z1: number }, cx = 0, cy = 0) => {
+  const face = { w: b.w, h: b.d, r: b.r };
+  return solidPath(m, { cx, cy, z0: b.z0, z1: b.z1, bottom: face, top: face });
+};
+const wall = wallTransform(m, FRONT, BODY.z1);
+
+// The floppy is clipped to "in front of the slot", so the part inside the monitor stays hidden.
+const [lx, ly] = project(m, -2000, FRONT, slotTopZ);
+const [rx, ry] = project(m, 2000, FRONT, slotTopZ);
+const clip = `M${lx} ${ly} L${rx} ${ry} L${rx} ${ry + 4000} L${lx} ${ly + 4000} Z`;
+const eject = { x: m.c * EJECT, y: m.d * EJECT };
+const diskFace = { w: DISK.w, h: DISK.d, r: 8 };
+---
+
+<svg class="crt" viewBox={`0 0 ${VB[0]} ${VB[1]}`} data-crt role="img" aria-labelledby="crt-title">
+  <title id="crt-title">A retro computer whose screen says “say hi”</title>
+  <defs>
+    <linearGradient id="crt-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d9ccff"></stop>
+      <stop offset="1" stop-color="#9a84ef"></stop>
+    </linearGradient>
+    <linearGradient id="crt-tube" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c7b7ff"></stop>
+      <stop offset="1" stop-color="#8a73e3"></stop>
+    </linearGradient>
+    <linearGradient id="crt-base" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c9bbfd"></stop>
+      <stop offset="1" stop-color="#8f79e6"></stop>
+    </linearGradient>
+    <linearGradient id="crt-disk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff7b52"></stop>
+      <stop offset="1" stop-color="#d9481f"></stop>
+    </linearGradient>
+    <radialGradient id="crt-glass" cx="0.4" cy="0.35" r="0.8">
+      <stop offset="0" stop-color="#3a3163"></stop>
+      <stop offset="1" stop-color="#191428"></stop>
+    </radialGradient>
+    <pattern id="crt-scan" width="4" height="3" patternUnits="userSpaceOnUse">
+      <rect width="4" height="1" fill="#000" opacity="0.35"></rect>
+    </pattern>
+    <filter id="crt-glow" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur stdDeviation="2.2" result="blur"></feGaussianBlur>
+      <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+    </filter>
+    <clipPath id="crt-slot-clip"><path d={clip}></path></clipPath>
+  </defs>
+
+  <!-- shadow on the desk -->
+  <rect
+    transform={planeTransform(m, 0, 24, 30)}
+    x={-200}
+    y={-170}
+    width="400"
+    height="340"
+    rx="40"
+    fill="#6f86dc"
+    opacity="0.28"></rect>
+
+  <!-- stand -->
+  <path d={box(BASE, 0, -10)} fill="url(#crt-base)"></path>
+  <rect
+    transform={planeTransform(m, BASE.z1, 0, -10)}
+    x={-BASE.w / 2}
+    y={-BASE.d / 2}
+    width={BASE.w}
+    height={BASE.d}
+    rx={BASE.r}
+    fill="#ddd2ff"></rect>
+
+  <!-- the tube behind the screen -->
+  <path d={box(TUBE, 0, TUBE.cy)} fill="url(#crt-tube)"></path>
+  <g transform={planeTransform(m, TUBE.z1, 0, TUBE.cy)}>
+    <rect x={-TUBE.w / 2} y={-TUBE.d / 2} width={TUBE.w} height={TUBE.d} rx={TUBE.r} fill="#e3d9ff"></rect>
+    <g stroke="#c4b4fb" stroke-width="7" stroke-linecap="round">
+      <path d="M-70 -40 H70 M-70 -18 H70 M-70 4 H70"></path>
+    </g>
+  </g>
+
+  <!-- body -->
+  <path d={box(BODY)} fill="url(#crt-body)"></path>
+  <g transform={planeTransform(m, BODY.z1)}>
+    <rect x={-BODY.w / 2} y={-BODY.d / 2} width={BODY.w} height={BODY.d} rx={BODY.r} fill="#f1ebff"></rect>
+  </g>
+
+  <!-- front wall: bezel, screen, slot -->
+  <g transform={wall}>
+    <rect x="-176" y="3" width="352" height={BODY.z1 - BODY.z0 - 6} rx="18" fill="#fff8ec"></rect>
+    <rect x="-150" y="16" width="300" height="198" rx="34" fill="#d9ccff"></rect>
+    <rect class="crt__glass" x="-136" y="28" width="272" height="174" rx="26" fill="url(#crt-glass)"></rect>
+    <rect x="-136" y="28" width="272" height="174" rx="26" fill="url(#crt-scan)"></rect>
+    <g class="crt__text" filter="url(#crt-glow)" data-crt-screen>
+      <text class="crt__dim" x="-114" y="62">{lines[0]}</text>
+      <text class="crt__line" x="-114" y="108" data-crt-line>{lines[1]}</text>
+      <text class="crt__small" x="-114" y="146" data-crt-line>{lines[2]}<tspan class="crt__cursor">█</tspan></text>
+    </g>
+    <path d="M-110 46 Q-40 34 36 40" fill="none" stroke="#fff" stroke-opacity="0.14" stroke-width="12" stroke-linecap="round"></path>
+
+    <rect x={SLOT.u0} y={SLOT.w0} width={SLOT.u1 - SLOT.u0} height={SLOT.w1 - SLOT.w0} rx="4" fill="#2b2344"></rect>
+    <circle class="crt__led" cx="-128" cy="231" r="5"></circle>
+    <text class="crt__brand" x="-112" y="235">khushi</text>
+    <circle cx="140" cy="262" r="7" fill="#b9a6fb"></circle>
+    <circle cx="160" cy="262" r="7" fill="#b9a6fb"></circle>
+    <polygon points="154,6 159,17 171,18 162,26 165,38 154,31 143,38 146,26 137,18 149,17" fill="#ffe14f"></polygon>
+  </g>
+
+  <!-- floppy, half in the drive -->
+  {
+    resume ? (
+      <a class="floppy" href={resume} target="_blank" rel="noopener" aria-label="Résumé (PDF, opens in a new tab)">
+        <g clip-path="url(#crt-slot-clip)">
+          <g class="floppy__disk" style={`--ex:${eject.x.toFixed(2)}px;--ey:${eject.y.toFixed(2)}px`}>
+            <path d={solidPath(m, { cx: DISK.cx, cy: DISK.cy, z0: DISK.z0, z1: DISK.z1, bottom: diskFace, top: diskFace })} fill="url(#crt-disk)" />
+            <g transform={planeTransform(m, DISK.z1, DISK.cx, DISK.cy)}>
+              <rect x={-DISK.w / 2} y={-DISK.d / 2} width={DISK.w} height={DISK.d} rx="8" fill="#ff8a63" />
+              <rect x="-54" y="6" width="108" height="56" rx="5" fill="#fffaf0" />
+              <path d="M-46 30 H46 M-46 46 H46" stroke="#c9d6ff" stroke-width="2" />
+              <text class="floppy__label" x="0" y="34">résumé</text>
+            </g>
+          </g>
+        </g>
+      </a>
+    ) : null
+  }
+</svg>
+
+<script>
+  // Types the screen out the first time the computer scrolls into view.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<SVGSVGElement>('[data-crt]').forEach((svg) => {
+    const lines = [...svg.querySelectorAll<SVGTextElement>('[data-crt-line]')];
+    if (reduce || !lines.length) return;
+    const texts = lines.map((l) => l.firstChild?.textContent ?? '');
+    lines.forEach((l) => l.firstChild && (l.firstChild.textContent = ''));
+    const io = new IntersectionObserver(
+      async ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        for (const [i, line] of lines.entries()) {
+          for (let c = 1; c <= texts[i].length; c++) {
+            if (line.firstChild) line.firstChild.textContent = texts[i].slice(0, c);
+            await new Promise((r) => setTimeout(r, 55));
+          }
+          await new Promise((r) => setTimeout(r, 250));
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(svg);
+  });
+</script>
+
+<style>
+  .crt {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .crt__text text {
+    font-family: var(--font-pixel);
+    fill: #7fe0b0;
+  }
+
+  .crt__dim {
+    font-size: 13px;
+    fill: #8f86be !important;
+  }
+
+  .crt__line {
+    font-size: 24px;
+  }
+
+  .crt__small {
+    font-size: 15px;
+  }
+
+  .crt__cursor {
+    animation: crt-blink 1s steps(2, jump-none) infinite;
+  }
+
+  @keyframes crt-blink {
+    to {
+      fill-opacity: 0;
+    }
+  }
+
+  .crt__led {
+    fill: #7fe0b0;
+    animation: crt-led 2.4s ease-in-out infinite;
+  }
+
+  @keyframes crt-led {
+    50% {
+      fill: #3fae7a;
+    }
+  }
+
+  .crt__brand {
+    fill: #9d8fd6;
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .floppy {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .floppy__disk {
+    transition: transform 0.5s var(--spring);
+  }
+
+  .floppy:hover .floppy__disk,
+  .floppy:focus-visible .floppy__disk {
+    transform: translate(var(--ex), var(--ey));
+  }
+
+  .floppy:focus-visible .floppy__disk {
+    filter: drop-shadow(0 0 0 var(--ink)) drop-shadow(0 0 3px var(--purple));
+  }
+
+  .floppy__label {
+    fill: #1b1526;
+    font-family: var(--font-hand);
+    font-size: 30px;
+    text-anchor: middle;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crt__cursor,
+    .crt__led {
+      animation: none;
+    }
+  }
+</style>

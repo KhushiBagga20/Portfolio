@@ -28,9 +28,7 @@ import { desk, pad, sections } from '../data/keyboard';
 
 <script>
   import { initKeyboard } from '../scripts/keyboard';
-  import { initHandoff } from '../scripts/handoff';
   document.querySelectorAll<SVGSVGElement>('svg[data-kb]').forEach(initKeyboard);
-  initHandoff();
 </script>
 
 <style>
