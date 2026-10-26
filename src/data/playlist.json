@@ -1,0 +1,809 @@
+{
+ "id": "1kMBWjQXu5W8u77h36J8jH",
+ "name": "Khushi",
+ "url": "https://open.spotify.com/playlist/1kMBWjQXu5W8u77h36J8jH",
+ "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84b69ad6f8352bd25fede9622f",
+ "fetched": "2026-10-26",
+ "tracks": [
+  {
+   "id": "2Ck6gblyk3UFCVPTh8o3TN",
+   "uri": "spotify:track:2Ck6gblyk3UFCVPTh8o3TN",
+   "title": "Youth",
+   "artist": "Daughter",
+   "duration": 253013,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f9e7f5cc42ac959998ca90ee"
+  },
+  {
+   "id": "7iQmjnDXYngWGsbjVnDc1U",
+   "uri": "spotify:track:7iQmjnDXYngWGsbjVnDc1U",
+   "title": "Amsterdam",
+   "artist": "Gregory Alan Isakov",
+   "duration": 198640,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27333ffa5c45ccea4103c917964"
+  },
+  {
+   "id": "3ZCTVFBt2Brf31RLEnCkWJ",
+   "uri": "spotify:track:3ZCTVFBt2Brf31RLEnCkWJ",
+   "title": "everything i wanted",
+   "artist": "Billie Eilish",
+   "duration": 245425,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273f2248cf6dad1d6c062587249"
+  },
+  {
+   "id": "1qFb85QhwOqpnAKh7ahsGQ",
+   "uri": "spotify:track:1qFb85QhwOqpnAKh7ahsGQ",
+   "title": "Smother",
+   "artist": "Daughter",
+   "duration": 241466,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273f9e7f5cc42ac959998ca90ee"
+  },
+  {
+   "id": "51QEyJI5M7uyd8DOh9tqQY",
+   "uri": "spotify:track:51QEyJI5M7uyd8DOh9tqQY",
+   "title": "Buzzcut Season",
+   "artist": "Lorde",
+   "duration": 246755,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273187331e276c898d39764cc98"
+  },
+  {
+   "id": "4LGJ2pLDvTRnul3EcZoYkX",
+   "uri": "spotify:track:4LGJ2pLDvTRnul3EcZoYkX",
+   "title": "Like Real People Do",
+   "artist": "Hozier",
+   "duration": 198029,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737a9bf5f82e32d33d4503fe7b"
+  },
+  {
+   "id": "2MvvoeRt8NcOXWESkxWn3g",
+   "uri": "spotify:track:2MvvoeRt8NcOXWESkxWn3g",
+   "title": "Ribs",
+   "artist": "Lorde",
+   "duration": 258969,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273187331e276c898d39764cc98"
+  },
+  {
+   "id": "0mnWNvwXRNu82bpfi2rsuz",
+   "uri": "spotify:track:0mnWNvwXRNu82bpfi2rsuz",
+   "title": "San Luis",
+   "artist": "Gregory Alan Isakov",
+   "duration": 272346,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2738d003a5f92e1571b883f46fe"
+  },
+  {
+   "id": "1WsEgieHsWWndAzLkmV105",
+   "uri": "spotify:track:1WsEgieHsWWndAzLkmV105",
+   "title": "hostage",
+   "artist": "Billie Eilish",
+   "duration": 229425,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273a9f6c04ba168640b48aa5795"
+  },
+  {
+   "id": "3ePd4K8tcdfr7KmbuOTrKK",
+   "uri": "spotify:track:3ePd4K8tcdfr7KmbuOTrKK",
+   "title": "From Gold",
+   "artist": "Novo Amor",
+   "duration": 214335,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27379b923163a047eb7be23dfda"
+  },
+  {
+   "id": "2ynCjjrmED5CfiVn2ZLkUk",
+   "uri": "spotify:track:2ynCjjrmED5CfiVn2ZLkUk",
+   "title": "Obstacles",
+   "artist": "Syd Matters",
+   "duration": 208706,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273baf75feff7c9a2c4ceaee87e"
+  },
+  {
+   "id": "0bkW98npv8EsWQ2fXFzK56",
+   "uri": "spotify:track:0bkW98npv8EsWQ2fXFzK56",
+   "title": "From Eden",
+   "artist": "Hozier",
+   "duration": 283466,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737a9bf5f82e32d33d4503fe7b"
+  },
+  {
+   "id": "7xghXOM3CaIK6wmR0xW1XS",
+   "uri": "spotify:track:7xghXOM3CaIK6wmR0xW1XS",
+   "title": "Feeling You",
+   "artist": "Harrison Storm",
+   "duration": 201195,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27312eb1bd5c3227bd02001c37b"
+  },
+  {
+   "id": "1ElGmhauttS9p7LwmHG9uM",
+   "uri": "spotify:track:1ElGmhauttS9p7LwmHG9uM",
+   "title": "Sometimes (Backwood)",
+   "artist": "Gigi Perez",
+   "duration": 153000,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273513e0264b503bbe94cf08ad6"
+  },
+  {
+   "id": "2QjOHCTQ1Jl3zawyYOpxh6",
+   "uri": "spotify:track:2QjOHCTQ1Jl3zawyYOpxh6",
+   "title": "Sweater Weather",
+   "artist": "The Neighbourhood",
+   "duration": 240400,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738265a736a1eb838ad5a0b921"
+  },
+  {
+   "id": "0bndF6tTweNXPjwpPL7Slt",
+   "uri": "spotify:track:0bndF6tTweNXPjwpPL7Slt",
+   "title": "Haven (from Life Is Strange)",
+   "artist": "Novo Amor",
+   "duration": 172500,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b27312a57ec30ea70b038a8ecc6f"
+  },
+  {
+   "id": "3Kj2EWpIBnvETsYq4cq0IH",
+   "uri": "spotify:track:3Kj2EWpIBnvETsYq4cq0IH",
+   "title": "Big Black Car",
+   "artist": "Gregory Alan Isakov",
+   "duration": 217466,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27393a1519118102a6d78164713"
+  },
+  {
+   "id": "6Vejmu5dz6MMOnn2pIko9q",
+   "uri": "spotify:track:6Vejmu5dz6MMOnn2pIko9q",
+   "title": "Forest Fires",
+   "artist": "Axel Flóvent",
+   "duration": 210924,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d67accd8e59e731315a76027"
+  },
+  {
+   "id": "7qFtcljd0PZ5kJZos70YjT",
+   "uri": "spotify:track:7qFtcljd0PZ5kJZos70YjT",
+   "title": "chance with you",
+   "artist": "mehro",
+   "duration": 215515,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273b6001fc409be66aba716ee8b"
+  },
+  {
+   "id": "5GbVzc6Ex5LYlLJqzRQhuy",
+   "uri": "spotify:track:5GbVzc6Ex5LYlLJqzRQhuy",
+   "title": "Mystery of Love",
+   "artist": "Sufjan Stevens",
+   "duration": 248960,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2733fc1588803d1887f11d660cc"
+  },
+  {
+   "id": "1Q4NQdmbxzO53eG3P4g3y5",
+   "uri": "spotify:track:1Q4NQdmbxzO53eG3P4g3y5",
+   "title": "Mt. Washington",
+   "artist": "Local Natives",
+   "duration": 198933,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27373f379b7c980cfb5be81553a"
+  },
+  {
+   "id": "44A0o4jA8F2ZF03Zacwlwx",
+   "uri": "spotify:track:44A0o4jA8F2ZF03Zacwlwx",
+   "title": "Je te laisserai des mots",
+   "artist": "Patrick Watson",
+   "duration": 160853,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738ea92a85c492af8a38750549"
+  },
+  {
+   "id": "66ZqZbAuzhjWroiYd2uqPl",
+   "uri": "spotify:track:66ZqZbAuzhjWroiYd2uqPl",
+   "title": "Candles",
+   "artist": "Daughter",
+   "duration": 293333,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273575df9738066d6c1c74d0444"
+  },
+  {
+   "id": "35PKfoynRpVFoAUE3D5Kc6",
+   "uri": "spotify:track:35PKfoynRpVFoAUE3D5Kc6",
+   "title": "Work Song",
+   "artist": "Hozier",
+   "duration": 229715,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737a9bf5f82e32d33d4503fe7b"
+  },
+  {
+   "id": "4sDbdBjuYQVdNNB4PiHUPo",
+   "uri": "spotify:track:4sDbdBjuYQVdNNB4PiHUPo",
+   "title": "Coastline",
+   "artist": "Hollow Coves",
+   "duration": 233973,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2732735fa941859fad0e5cc7460"
+  },
+  {
+   "id": "7B0TgcRvExea3JYZfuRwI2",
+   "uri": "spotify:track:7B0TgcRvExea3JYZfuRwI2",
+   "title": "At a Glance",
+   "artist": "Message To Bears",
+   "duration": 219906,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27335c0b12724c2c9296a8e1436"
+  },
+  {
+   "id": "40ALUAPznjcGK26OezRJcK",
+   "uri": "spotify:track:40ALUAPznjcGK26OezRJcK",
+   "title": "The Great Escape",
+   "artist": "Patrick Watson",
+   "duration": 187373,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735039f4c87a6583d206c8bc64"
+  },
+  {
+   "id": "43z2Z0IWWjR2BP4lERGs93",
+   "uri": "spotify:track:43z2Z0IWWjR2BP4lERGs93",
+   "title": "Home",
+   "artist": "Daughter",
+   "duration": 258879,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735bf1c8a047aa6efe4fec1cef"
+  },
+  {
+   "id": "44alNkXsYnTyPnkMdohBcx",
+   "uri": "spotify:track:44alNkXsYnTyPnkMdohBcx",
+   "title": "Bloom (Online Bonus Track)",
+   "artist": "The Paper Kites",
+   "duration": 209816,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273fca109d13885d2d798779eef"
+  },
+  {
+   "id": "32XaqPVTVkkuOiOPQZ3SpA",
+   "uri": "spotify:track:32XaqPVTVkkuOiOPQZ3SpA",
+   "title": "midnight love",
+   "artist": "girl in red",
+   "duration": 193928,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27348de97658631644cc60f3c8d"
+  },
+  {
+   "id": "7qH9Z4dJEN0l9bidizW7fq",
+   "uri": "spotify:track:7qH9Z4dJEN0l9bidizW7fq",
+   "title": "Anchor",
+   "artist": "Novo Amor",
+   "duration": 257533,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273277620423172f5a151f452e3"
+  },
+  {
+   "id": "2DHDuADAHoUW6n0z80RLQF",
+   "uri": "spotify:track:2DHDuADAHoUW6n0z80RLQF",
+   "title": "Pieces",
+   "artist": "Andrew Belle",
+   "duration": 241119,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27341b7816b18a155061e097c7d"
+  },
+  {
+   "id": "5377z0OljWvRR7CdSQrJxP",
+   "uri": "spotify:track:5377z0OljWvRR7CdSQrJxP",
+   "title": "The Woods",
+   "artist": "Hollow Coves",
+   "duration": 241546,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2732735fa941859fad0e5cc7460"
+  },
+  {
+   "id": "7hDVYcQq6MxkdJGweuCtl9",
+   "uri": "spotify:track:7hDVYcQq6MxkdJGweuCtl9",
+   "title": "ocean eyes",
+   "artist": "Billie Eilish",
+   "duration": 200379,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273a9f6c04ba168640b48aa5795"
+  },
+  {
+   "id": "1g0xyCMUBKUaMDCk00Hhmk",
+   "uri": "spotify:track:1g0xyCMUBKUaMDCk00Hhmk",
+   "title": "Embody Me",
+   "artist": "Novo Amor",
+   "duration": 190293,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273277620423172f5a151f452e3"
+  },
+  {
+   "id": "2xlV2CuWgpPyE9e0GquKDN",
+   "uri": "spotify:track:2xlV2CuWgpPyE9e0GquKDN",
+   "title": "Someone To Stay",
+   "artist": "Vancouver Sleep Clinic",
+   "duration": 254013,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273dabc6fe9dd3454884cf65071"
+  },
+  {
+   "id": "1UNXUhPR9QEAXgV41c7saC",
+   "uri": "spotify:track:1UNXUhPR9QEAXgV41c7saC",
+   "title": "Landfill",
+   "artist": "Daughter",
+   "duration": 263809,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273575df9738066d6c1c74d0444"
+  },
+  {
+   "id": "2u0CelO5c81XS7z3dGpHbS",
+   "uri": "spotify:track:2u0CelO5c81XS7z3dGpHbS",
+   "title": "The Beach",
+   "artist": "The Neighbourhood",
+   "duration": 255133,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2735260c62db020e5861a51556d"
+  },
+  {
+   "id": "5Ewz5ms8XpjtkihWFLnJJs",
+   "uri": "spotify:track:5Ewz5ms8XpjtkihWFLnJJs",
+   "title": "Paint",
+   "artist": "The Paper Kites",
+   "duration": 191773,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273340490b37ae7b906b24f5e5b"
+  },
+  {
+   "id": "6q4c1vPRZREh7nw3wG7Ixz",
+   "uri": "spotify:track:6q4c1vPRZREh7nw3wG7Ixz",
+   "title": "That Home",
+   "artist": "The Cinematic Orchestra",
+   "duration": 103920,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f04457d8ce4be7b714f35cb1"
+  },
+  {
+   "id": "27Db1BCtkCQ4bFvENFYogm",
+   "uri": "spotify:track:27Db1BCtkCQ4bFvENFYogm",
+   "title": "Holland",
+   "artist": "Novo Amor",
+   "duration": 159877,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27379b923163a047eb7be23dfda"
+  },
+  {
+   "id": "7kGSlff8LYntGZQVk65liB",
+   "uri": "spotify:track:7kGSlff8LYntGZQVk65liB",
+   "title": "Flaws",
+   "artist": "Vancouver Sleep Clinic",
+   "duration": 199400,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273a7c1381d6e5bf955745036f7"
+  },
+  {
+   "id": "7brQHA2CgQpcMBiOlfiXYb",
+   "uri": "spotify:track:7brQHA2CgQpcMBiOlfiXYb",
+   "title": "Afraid",
+   "artist": "The Neighbourhood",
+   "duration": 251186,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738265a736a1eb838ad5a0b921"
+  },
+  {
+   "id": "0Uon5NsSAkBDx69XYOaQ5P",
+   "uri": "spotify:track:0Uon5NsSAkBDx69XYOaQ5P",
+   "title": "Stay",
+   "artist": "Gracie Abrams",
+   "duration": 177152,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738f0e4f832dfe1840169c8009"
+  },
+  {
+   "id": "0u4rkpmNtgcFxYHepnVF4v",
+   "uri": "spotify:track:0u4rkpmNtgcFxYHepnVF4v",
+   "title": "Carry You",
+   "artist": "Novo Amor",
+   "duration": 273106,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273277620423172f5a151f452e3"
+  },
+  {
+   "id": "5eXnC2B5RU5fAhfwvV2ABD",
+   "uri": "spotify:track:5eXnC2B5RU5fAhfwvV2ABD",
+   "title": "Oceans",
+   "artist": "Seafret",
+   "duration": 215666,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273e11e851e3e7e9b09f2fe79be"
+  },
+  {
+   "id": "5XsAal7ZcWg1I5T4NcRjkv",
+   "uri": "spotify:track:5XsAal7ZcWg1I5T4NcRjkv",
+   "title": "Halley's Comet",
+   "artist": "Billie Eilish",
+   "duration": 234761,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2732a038d3bf875d23e4aeaa84e"
+  },
+  {
+   "id": "71BWZa1liIRyUiuJ3MB66o",
+   "uri": "spotify:track:71BWZa1liIRyUiuJ3MB66o",
+   "title": "I Know You",
+   "artist": "Faye Webster",
+   "duration": 251666,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273fc37e2e19b33d5705c251644"
+  },
+  {
+   "id": "7glKwbR1DyuIuE6XvZvJbQ",
+   "uri": "spotify:track:7glKwbR1DyuIuE6XvZvJbQ",
+   "title": "#3",
+   "artist": "Aphex Twin",
+   "duration": 464293,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738155dc4dae262f31d39d8296"
+  },
+  {
+   "id": "3bjg5cbmuwDoS7e2dAWyRG",
+   "uri": "spotify:track:3bjg5cbmuwDoS7e2dAWyRG",
+   "title": "Butterfly",
+   "artist": "BTS",
+   "duration": 238861,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d5d5e874bde16f6ef86c99dc"
+  },
+  {
+   "id": "02Z1kLNDFXeNs57Pmifk9J",
+   "uri": "spotify:track:02Z1kLNDFXeNs57Pmifk9J",
+   "title": "lover's grip",
+   "artist": "Them & I",
+   "duration": 129429,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d8ab6c9d0e4b65a1c142e1a9"
+  },
+  {
+   "id": "4AnSl04w2n2wLTwBgeYTYj",
+   "uri": "spotify:track:4AnSl04w2n2wLTwBgeYTYj",
+   "title": "Petrichor (interlude)",
+   "artist": "BoyWithUke",
+   "duration": 163437,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273661c91263dcc137f9fc7e6cb"
+  },
+  {
+   "id": "0SUDiaR0qm30fXVGPjPvRp",
+   "uri": "spotify:track:0SUDiaR0qm30fXVGPjPvRp",
+   "title": "Visions of Gideon",
+   "artist": "Sufjan Stevens",
+   "duration": 247808,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2730db3901606954f424070ff01"
+  },
+  {
+   "id": "5Qnrgqy1pAm9GyNQOgyVFz",
+   "uri": "spotify:track:5Qnrgqy1pAm9GyNQOgyVFz",
+   "title": "Fourth of July",
+   "artist": "Sufjan Stevens",
+   "duration": 279316,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273820e2ac14772ae3162c6d479"
+  },
+  {
+   "id": "0qL3JquOSa7ErWX3RXfUgo",
+   "uri": "spotify:track:0qL3JquOSa7ErWX3RXfUgo",
+   "title": "Habits",
+   "artist": "Genevieve Stokes",
+   "duration": 134865,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273fafe08f63f3250a59e865858"
+  },
+  {
+   "id": "0j1Ia2lQWrcXrQZI4AdJlk",
+   "uri": "spotify:track:0j1Ia2lQWrcXrQZI4AdJlk",
+   "title": "IDK You Yet",
+   "artist": "Alexander 23",
+   "duration": 184638,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273fe03064db12346c962cd0c56"
+  },
+  {
+   "id": "0VySCkMP67vSTy9IrzbvHE",
+   "uri": "spotify:track:0VySCkMP67vSTy9IrzbvHE",
+   "title": "Chemistry",
+   "artist": "Gigi Perez",
+   "duration": 284137,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2736e6cda81261c6763fd7857b8"
+  },
+  {
+   "id": "51Yqjd5oqkp5toGT48jrTi",
+   "uri": "spotify:track:51Yqjd5oqkp5toGT48jrTi",
+   "title": "Jamais Vu",
+   "artist": "BTS",
+   "duration": 227275,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273466fb511bbb3d60b8f90b8df"
+  },
+  {
+   "id": "5EJA7Rwkeuvm98CZg0XXNO",
+   "uri": "spotify:track:5EJA7Rwkeuvm98CZg0XXNO",
+   "title": "What Would I Do?",
+   "artist": "Strawberry Guy",
+   "duration": 234000,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273ba5c5d0971159a6e3299d78b"
+  },
+  {
+   "id": "5dt0PVoQ5xq5mvrJ1Bp3ou",
+   "uri": "spotify:track:5dt0PVoQ5xq5mvrJ1Bp3ou",
+   "title": "do i ever cross your mind",
+   "artist": "sombr",
+   "duration": 168856,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27318ed851fae0639b6e478a09d"
+  },
+  {
+   "id": "5sA3i6SGkILMiZW6Fhx4wv",
+   "uri": "spotify:track:5sA3i6SGkILMiZW6Fhx4wv",
+   "title": "the way things go",
+   "artist": "beabadoobee",
+   "duration": 187800,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2739c835164f2d56dae7ee8a402"
+  },
+  {
+   "id": "7zFio8WT0tTBqLs1pXYKqy",
+   "uri": "spotify:track:7zFio8WT0tTBqLs1pXYKqy",
+   "title": "We Hug Now",
+   "artist": "Sydney Rose",
+   "duration": 248821,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273a87e82923532962833f012e2"
+  },
+  {
+   "id": "2kfGoV9a5dbSKCNmUWH2ZF",
+   "uri": "spotify:track:2kfGoV9a5dbSKCNmUWH2ZF",
+   "title": "Turning Page",
+   "artist": "Sleeping At Last",
+   "duration": 255893,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27330eb992a82f895893f60375b"
+  },
+  {
+   "id": "2FviiM1DSKfJSRxMV5TD9w",
+   "uri": "spotify:track:2FviiM1DSKfJSRxMV5TD9w",
+   "title": "so far away (Feat. SURAN)",
+   "artist": "Agust D, SURAN",
+   "duration": 358270,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d50c63294b5dd4f6b7f79429"
+  },
+  {
+   "id": "2SyLEZFDH9pHAF4GpfVRJS",
+   "uri": "spotify:track:2SyLEZFDH9pHAF4GpfVRJS",
+   "title": "do you think you could love me?",
+   "artist": "yung kai",
+   "duration": 236140,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738651ac3aa58d3b328b245e97"
+  },
+  {
+   "id": "4oISmbyFTnq3VqpSBL6sjJ",
+   "uri": "spotify:track:4oISmbyFTnq3VqpSBL6sjJ",
+   "title": "Spiderwebs",
+   "artist": "Alfie Jukes",
+   "duration": 153241,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273dafa994e9111f79e2ae7a7e0"
+  },
+  {
+   "id": "5LtCes4sYP1K9wiCrUAD5r",
+   "uri": "spotify:track:5LtCes4sYP1K9wiCrUAD5r",
+   "title": "Eternal",
+   "artist": "Dear Lily",
+   "duration": 224019,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273d6f6cdfe636f57de99b1a80e"
+  },
+  {
+   "id": "4v0Zqmuhlbt5nCj712Y26n",
+   "uri": "spotify:track:4v0Zqmuhlbt5nCj712Y26n",
+   "title": "The Moon Will Sing",
+   "artist": "The Crane Wives",
+   "duration": 220786,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27303c7b44b87536b1571794e66"
+  },
+  {
+   "id": "3aO4GaEhtu1UanIGKefdD3",
+   "uri": "spotify:track:3aO4GaEhtu1UanIGKefdD3",
+   "title": "Icarus",
+   "artist": "Bastille",
+   "duration": 225040,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273faee7306ec2f36aeccc4bc98"
+  },
+  {
+   "id": "43zdsphuZLzwA9k4DJhU0I",
+   "uri": "spotify:track:43zdsphuZLzwA9k4DJhU0I",
+   "title": "when the party's over",
+   "artist": "Billie Eilish",
+   "duration": 196077,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27350a3147b4edd7701a876c6ce"
+  },
+  {
+   "id": "1SuNH8rKUtcjWJYvZ3bBGo",
+   "uri": "spotify:track:1SuNH8rKUtcjWJYvZ3bBGo",
+   "title": "Please Don't Be",
+   "artist": "Hazlett",
+   "duration": 175201,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b273dfdac37bb086c400d092d4b2"
+  },
+  {
+   "id": "2tJUcBxiQEYSCzC3BdIOk8",
+   "uri": "spotify:track:2tJUcBxiQEYSCzC3BdIOk8",
+   "title": "Love is Pain",
+   "artist": "FINNEAS",
+   "duration": 224278,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733bfed0974a996bfd87ea1c9a"
+  },
+  {
+   "id": "1ShRHPAiiIrh0arZbSFmx1",
+   "uri": "spotify:track:1ShRHPAiiIrh0arZbSFmx1",
+   "title": "Heavy",
+   "artist": "The Marías",
+   "duration": 253213,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273657d6776f64aa731c8d1748b"
+  },
+  {
+   "id": "5NffPhg2C8T8GM8WTMvADQ",
+   "uri": "spotify:track:5NffPhg2C8T8GM8WTMvADQ",
+   "title": "Willow Tree March",
+   "artist": "The Paper Kites",
+   "duration": 276813,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273fca109d13885d2d798779eef"
+  },
+  {
+   "id": "54X4xRbtZhOOZfCBbpSkOg",
+   "uri": "spotify:track:54X4xRbtZhOOZfCBbpSkOg",
+   "title": "Against the Kitchen Floor",
+   "artist": "Will Wood",
+   "duration": 306066,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27378a1762c3df46ddd8f994ffd"
+  },
+  {
+   "id": "3dEdX1g7zycepndaSgVocd",
+   "uri": "spotify:track:3dEdX1g7zycepndaSgVocd",
+   "title": "Marigolds",
+   "artist": "Andrea Bejar",
+   "duration": 228216,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2734a6dee830d301ae943718987"
+  },
+  {
+   "id": "3lyJMafyQjqx0qnILMzRq7",
+   "uri": "spotify:track:3lyJMafyQjqx0qnILMzRq7",
+   "title": "who are you",
+   "artist": "mehro",
+   "duration": 250857,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2730990b91824370cb6842f7399"
+  },
+  {
+   "id": "0Cuwd86fyu0lPVokzTp8Hu",
+   "uri": "spotify:track:0Cuwd86fyu0lPVokzTp8Hu",
+   "title": "Closer (with Paul Blanco, Mahalia)",
+   "artist": "RM, Paul Blanco, Mahalia",
+   "duration": 196507,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273fa60e8a8d5ca09efc6098175"
+  },
+  {
+   "id": "2hMvhh9FiCB6njOYR7tkT8",
+   "uri": "spotify:track:2hMvhh9FiCB6njOYR7tkT8",
+   "title": "Change pt.2",
+   "artist": "RM",
+   "duration": 114026,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273fa60e8a8d5ca09efc6098175"
+  },
+  {
+   "id": "4NZ5UJEqzXL03QjuvmqZFY",
+   "uri": "spotify:track:4NZ5UJEqzXL03QjuvmqZFY",
+   "title": "iloveyou",
+   "artist": "BETWEEN FRIENDS",
+   "duration": 166358,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2738d9d93cf95ef819563e021ff"
+  },
+  {
+   "id": "1U1TpPbxYRFteIeT0Az4kM",
+   "uri": "spotify:track:1U1TpPbxYRFteIeT0Az4kM",
+   "title": "Bruise",
+   "artist": "BETWEEN FRIENDS",
+   "duration": 179144,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273752e14cd708261f6f202d396"
+  },
+  {
+   "id": "4Ar1E0HhDOUwQyGzzHsED3",
+   "uri": "spotify:track:4Ar1E0HhDOUwQyGzzHsED3",
+   "title": "Glitter & Honey",
+   "artist": "Del Water Gap",
+   "duration": 187400,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273ccd555f684321cc0a35373c4"
+  },
+  {
+   "id": "185Bkk01Co5sWL64zvA7BD",
+   "uri": "spotify:track:185Bkk01Co5sWL64zvA7BD",
+   "title": "Up At Night",
+   "artist": "Stephen Dawes",
+   "duration": 162407,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273034de3bfab742de036ac2de5"
+  },
+  {
+   "id": "1A7PqR5g8ohmDNiv9lW3Ca",
+   "uri": "spotify:track:1A7PqR5g8ohmDNiv9lW3Ca",
+   "title": "Blisters",
+   "artist": "Andrea Bejar",
+   "duration": 223202,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2736172b8b924813fc0a260b802"
+  },
+  {
+   "id": "3sslYZcFKtUvIEWN9lADgr",
+   "uri": "spotify:track:3sslYZcFKtUvIEWN9lADgr",
+   "title": "First Love/Late Spring",
+   "artist": "Mitski",
+   "duration": 278640,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273e90db8983ebd43b776694179"
+  },
+  {
+   "id": "1YSvsbCHSwyGKX7wNtV4ld",
+   "uri": "spotify:track:1YSvsbCHSwyGKX7wNtV4ld",
+   "title": "To Be Loved",
+   "artist": "Askjell, AURORA",
+   "duration": 228594,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273411038d428378c6c63c20775"
+  },
+  {
+   "id": "4BIuY0oEopXizyP3WvkNrT",
+   "uri": "spotify:track:4BIuY0oEopXizyP3WvkNrT",
+   "title": "Oh shit…are we in love?",
+   "artist": "Valley",
+   "duration": 155384,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273e661c05b66f93ae82583cafa"
+  },
+  {
+   "id": "1dOmEeayAc8UV4DdK20pFN",
+   "uri": "spotify:track:1dOmEeayAc8UV4DdK20pFN",
+   "title": "In My Head",
+   "artist": "Nell Mescal",
+   "duration": 212625,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2739e29e383fbb1e21a589b1312"
+  },
+  {
+   "id": "3qs1ozCx271UQqmzC7oNuj",
+   "uri": "spotify:track:3qs1ozCx271UQqmzC7oNuj",
+   "title": "The King",
+   "artist": "Sarah Kinsley",
+   "duration": 206373,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2733518fc5a457d66a382cac029"
+  },
+  {
+   "id": "312z6PZ8wwREck8613PkJk",
+   "uri": "spotify:track:312z6PZ8wwREck8613PkJk",
+   "title": "A Couple Minutes",
+   "artist": "Olivia Dean",
+   "duration": 212000,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2739a336bfb6d40bbd90a507417"
+  },
+  {
+   "id": "6sGIMrtIzQjdzNndVxe397",
+   "uri": "spotify:track:6sGIMrtIzQjdzNndVxe397",
+   "title": "So Easy (To Fall In Love)",
+   "artist": "Olivia Dean",
+   "duration": 169000,
+   "cover": "https://image-cdn-fa.spotifycdn.com/image/ab67616d0000b2739a336bfb6d40bbd90a507417"
+  },
+  {
+   "id": "3IC7SjOoA1gt0xzUZBMww8",
+   "uri": "spotify:track:3IC7SjOoA1gt0xzUZBMww8",
+   "title": "The Bird Song (with Em Beihold)",
+   "artist": "Noah Floersch, Em Beihold",
+   "duration": 233087,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27303a2ba8d7b60f5dd2b5976d6"
+  },
+  {
+   "id": "5MG69A9XyXDbBbeOxdR3Tl",
+   "uri": "spotify:track:5MG69A9XyXDbBbeOxdR3Tl",
+   "title": "don't miss me",
+   "artist": "Claire Rosinkranz",
+   "duration": 123949,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2737a87a5c655d19748b4aef723"
+  },
+  {
+   "id": "0wuX971DEAv6BIm4J1ADfE",
+   "uri": "spotify:track:0wuX971DEAv6BIm4J1ADfE",
+   "title": "Before I Found Her",
+   "artist": "Hayd",
+   "duration": 185244,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273e0ecb98e53abbd2b5f0718c6"
+  },
+  {
+   "id": "4lU0whPQnQn0EMgmF46iz0",
+   "uri": "spotify:track:4lU0whPQnQn0EMgmF46iz0",
+   "title": "Die Happy",
+   "artist": "Holly Humberstone",
+   "duration": 229650,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27381f9fdb96471a55be93353ad"
+  },
+  {
+   "id": "3cLXrotzCjYCkN73PewALM",
+   "uri": "spotify:track:3cLXrotzCjYCkN73PewALM",
+   "title": "Good Goodbye",
+   "artist": "HWASA",
+   "duration": 223000,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273f7ec5c454a78dfb0086c0c97"
+  },
+  {
+   "id": "10LBv5a9JLom1L6a05goUV",
+   "uri": "spotify:track:10LBv5a9JLom1L6a05goUV",
+   "title": "I’m Not Perfect (But I’m Trying)",
+   "artist": "Rachel Chinouriri",
+   "duration": 206222,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2736e70b9666b7c5e5404043602"
+  },
+  {
+   "id": "5UqTWnG7YZAbj1SYMvnGsU",
+   "uri": "spotify:track:5UqTWnG7YZAbj1SYMvnGsU",
+   "title": "Scarlett",
+   "artist": "Holly Humberstone",
+   "duration": 196226,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b27316c6a74d37f1ec412d15be61"
+  },
+  {
+   "id": "3RAjJw4nQu1FMwmuTzsMbT",
+   "uri": "spotify:track:3RAjJw4nQu1FMwmuTzsMbT",
+   "title": "The Kite",
+   "artist": "Luisa Marion, Noah Floersch",
+   "duration": 235500,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b273308ea8bc1b309cbf9320fb88"
+  },
+  {
+   "id": "555poPmhRmQWPsMDGwkifG",
+   "uri": "spotify:track:555poPmhRmQWPsMDGwkifG",
+   "title": "Cutie",
+   "artist": "COIN",
+   "duration": 184315,
+   "cover": "https://image-cdn-ak.spotifycdn.com/image/ab67616d0000b2739f31a0f29ae2e2c6d0782102"
+  }
+ ]
+}

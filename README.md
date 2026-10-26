@@ -85,22 +85,42 @@ cross-document view transitions, the floppy disk flies from the grid into the di
 
 ## 5. The record room (`/music/`)
 
-A turntable you can actually use. Same 2.5D engine as the keyboard, so the deck belongs to
-the same world — brushed-metal chassis, stroboscopic dots, grooves, a real tonearm.
+A turntable you can actually use, loaded from your public Spotify playlist. The deck is drawn
+with the same 2.5D engine as the keyboard — brushed-metal chassis, stroboscopic dots, grooves,
+a real tonearm — and Spotify's own embedded player does the streaming.
 
 - **Pick a sleeve** and the record slides out, flies across the room, lands on the platter,
-  the arm swings over and the platter winds up to speed. Picking another reverses it first.
-- **Controls:** start/stop (on the deck or the panel), previous, next, shuffle, 33⅓ / 45,
-  and a draggable pitch fader (arrow keys work too). The strobe ring only drifts when the
-  pitch is off zero, like the real thing.
-- **No audio ships with the site** — those would be someone else's recordings. The deck
-  spins for real and never pretends to be playing sound; `listen` links out instead.
+  the arm swings over and the platter winds up. Picking another reverses it first.
+- **Controls:** start/stop (on the deck or the panel), previous, next, **shuffle** (anything
+  from the playlist at random), **dig deeper** (refills the crate with a fresh handful),
+  33⅓ / 45, and a pitch fader you can drag or nudge with arrow keys.
+- **The platter follows the player.** Spotify reports what it's doing and the deck matches it,
+  so the record is never spinning at something that isn't playing. When a track ends, the
+  needle moves on by itself.
+- **Speed and pitch move the platter only** — Spotify keeps its own tempo, and the page says so.
+- **Spotify loads only once you pick a record**, so nothing third-party touches the page for
+  someone just looking around. Full tracks play for signed-in Spotify listeners; everyone else
+  gets the 30-second preview.
 - **Reduced motion:** no flight and no spinning; the record simply appears on the platter.
 - **Phones:** deck first, then controls, then a swipeable row of sleeves.
 
-Add records in `src/data/music.ts`. Anything you leave out is left out — nothing is invented.
-Covers go in `src/assets/covers/`, imported and set as `cover`; until then each sleeve is
-typeset from the artist and title.
+### Refreshing the playlist
+
+```bash
+npm run playlist        # re-reads the playlist into src/data/playlist.json
+```
+
+`scripts/fetch-playlist.mjs` reads two public Spotify endpoints — the playlist's embed page for
+the track list, and the oEmbed endpoint for each track's album art. No account or API key needed,
+as long as the playlist is public. Covers are hotlinked from Spotify's CDN rather than copied
+into the repo, and no audio is ever stored here: the music stays Spotify's to serve.
+
+To use a different playlist, change `PLAYLIST` in that script (or run it with
+`PLAYLIST_ID=… npm run playlist`) and commit the regenerated JSON.
+
+One caveat worth knowing: the track list comes from Spotify's own embed page, which is an
+internal format they could change. If the script ever errors, the site keeps working on the
+last committed `playlist.json` — only the refresh breaks.
 
 ## Where things live
 
@@ -117,7 +137,8 @@ typeset from the artist and title.
 | Keyboard drawing | `src/components/KeyboardScene.astro`, `src/components/Garden.astro` |
 | Sections | `About`, `Projects` (+ archive), `Milestones`, `Communities`, `Skills`, `Contact` in `src/components/` |
 | Shared bits | `SectionHead`, `Badge`, `ComingSoon`, `FloppyDisk` in `src/components/` |
-| Record collection | `src/data/music.ts` |
+| Playlist data (generated) | `src/data/playlist.json` ← `scripts/fetch-playlist.mjs` |
+| Record collection + sleeve tints | `src/data/music.ts` |
 | Record room | `src/pages/music.astro`, `src/components/MusicRoom.astro` |
 | Deck + sleeves | `src/components/Turntable.astro`, `src/components/Sleeve.astro` |
 | Deck state machine + choreography | `src/scripts/turntable.ts` |

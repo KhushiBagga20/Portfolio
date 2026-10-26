@@ -1,31 +1,37 @@
 ---
-// One record sleeve. Uses the cover image when there is one, and otherwise
-// typesets the sleeve by hand — honest, and it still looks like a real sleeve.
-import { Image } from 'astro:assets';
-import type { Record } from '../data/music';
+// One record sleeve. The cover comes straight from Spotify's CDN; if a track somehow
+// has no artwork, the sleeve is typeset from the title and artist instead.
+//
+// Everything the browser needs to repaint this sleeve for a different track carries a
+// data- hook, so digging through the crate doesn't rebuild any markup.
+import { tintFor, type Track } from '../data/music';
 
 interface Props {
-  record: Record;
-  sizes?: string;
+  track: Track;
 }
 
-const { record: r, sizes = '(max-width: 899px) 60vw, 26vw' } = Astro.props;
-const title = r.title || r.artist;
+const { track } = Astro.props;
+const tint = tintFor(track.id);
 ---
 
-<div class="sleeve" style={`--paper:${r.sleeve.paper};--ink:${r.sleeve.ink};--label:${r.sleeve.label}`}>
-  {
-    r.cover ? (
-      <Image class="sleeve__art" src={r.cover} alt={`${title} — ${r.artist}`} widths={[240, 420, 640]} sizes={sizes} />
-    ) : (
-      <div class="sleeve__art sleeve__art--blank" aria-hidden="true">
-        <span class="sleeve__ring" />
-        <p class="sleeve__artist">{r.artist}</p>
-        {r.title ? <p class="sleeve__title">{r.title}</p> : <p class="sleeve__title sleeve__title--todo">untitled</p>}
-        <span class="sleeve__bar" />
-      </div>
-    )
-  }
+<div class="sleeve" data-sleeve style={`--paper:${tint.paper};--label:${tint.label}`}>
+  <img
+    class="sleeve__art"
+    data-cover
+    src={track.cover ?? ''}
+    alt=""
+    width="300"
+    height="300"
+    loading="lazy"
+    decoding="async"
+    hidden={!track.cover}
+  />
+  <div class="sleeve__blank" data-blank aria-hidden="true" hidden={Boolean(track.cover)}>
+    <span class="sleeve__ring"></span>
+    <p class="sleeve__artist" data-blank-artist>{track.artist}</p>
+    <p class="sleeve__title" data-blank-title>{track.title}</p>
+    <span class="sleeve__bar"></span>
+  </div>
   <span class="sleeve__spine" aria-hidden="true"></span>
   <span class="sleeve__gloss" aria-hidden="true"></span>
 </div>
@@ -51,8 +57,12 @@ const title = r.title || r.artist;
     object-fit: cover;
   }
 
-  /* Typeset sleeve, used until a cover image exists. */
-  .sleeve__art--blank {
+  .sleeve__art[hidden] {
+    display: none;
+  }
+
+  /* Only used when a track has no artwork. */
+  .sleeve__blank {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -61,7 +71,11 @@ const title = r.title || r.artist;
     background:
       radial-gradient(60% 50% at 70% 18%, rgb(255 255 255 / 0.55), transparent 70%),
       var(--paper);
-    color: var(--ink);
+    color: #2a2440;
+  }
+
+  .sleeve__blank[hidden] {
+    display: none;
   }
 
   .sleeve__ring {
@@ -73,19 +87,6 @@ const title = r.title || r.artist;
     border: 1px solid currentColor;
     border-radius: 50%;
     opacity: 0.14;
-    translate: -50% -50%;
-  }
-
-  .sleeve__ring::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: var(--label);
-    opacity: 0.5;
     translate: -50% -50%;
   }
 
@@ -103,10 +104,6 @@ const title = r.title || r.artist;
     overflow-wrap: anywhere;
   }
 
-  .sleeve__title--todo {
-    opacity: 0.45;
-  }
-
   .sleeve__bar {
     width: 38%;
     height: 4px;
@@ -115,7 +112,6 @@ const title = r.title || r.artist;
     background: var(--label);
   }
 
-  /* The sleeve's folded edge and a sheen across the plastic. */
   .sleeve__spine {
     position: absolute;
     inset: 0 auto 0 0;
