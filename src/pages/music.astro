@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import MusicRoom from '../components/MusicRoom.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title={`Records · ${site.fullName}`}
+  description={`A turntable you can actually use, loaded with the records ${site.name} keeps coming back to.`}
+>
+  <Nav />
+  <main>
+    <MusicRoom />
+  </main>
+</Base>

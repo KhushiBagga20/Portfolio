@@ -20,6 +20,7 @@ export const site = {
     { label: 'about', href: '/#about' },
     { label: 'projects', href: '/#projects' },
     { label: 'milestones', href: '/#milestones' },
+    { label: 'records', href: '/music/' },
     { label: 'contact', href: '/#contact' },
   ],
 

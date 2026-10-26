@@ -1,0 +1,349 @@
+---
+// The deck. Drawn with the same little 2.5D engine as the keyboard and the CRT
+// (src/scripts/iso.ts), so it belongs to the same world.
+//
+// Anything that moves is a nested <g> inside a plane transform, so it can be
+// rotated in CSS/WAAPI without recomputing the projection every frame.
+import { basis, planeTransform, project, solidPath } from '../scripts/iso';
+
+// ── Geometry, in plane units (100 = one keycap) ───
+const CHASSIS = { w: 1180, d: 880, r: 54, z0: 0, z1: 110 };
+const FEET_Z = -26;
+const PLATTER = { cx: -170, cy: 30, r: 332, z0: CHASSIS.z1, z1: CHASSIS.z1 + 34 };
+const DISC = { r: 320, z: PLATTER.z1 + 5 };
+const LABEL_R = 104;
+const SPINDLE = { r: 11, z1: DISC.z + 42 };
+const PIVOT = { x: 380, y: -250, z: CHASSIS.z1 + 64 };
+const ARM_Z = PIVOT.z + 10;
+const REST_POST: [number, number] = [470, 230];
+
+// Tonearm angles, worked out from the geometry: the arm is drawn along local +x with the
+// stylus ~497 units out, so REST parks it on the post and PLAY drops it on the outer groove.
+const ARM_REST = 76;
+const ARM_PLAY = 121;
+
+// ── Camera, fitted to the viewBox ─────────────────
+const VB: [number, number] = [1280, 980];
+const PAD = 26;
+const angles = { yaw: 26, pitch: 46 };
+const m0 = basis({ ...angles, scale: 1, x: 0, y: 0 });
+const probe: [number, number][] = [];
+for (const [x, y] of [
+  [-CHASSIS.w / 2, -CHASSIS.d / 2],
+  [CHASSIS.w / 2, -CHASSIS.d / 2],
+  [CHASSIS.w / 2, CHASSIS.d / 2],
+  [-CHASSIS.w / 2, CHASSIS.d / 2],
+] as const) {
+  probe.push(project(m0, x, y, FEET_Z), project(m0, x, y, CHASSIS.z1));
+}
+probe.push(project(m0, PIVOT.x, PIVOT.y, SPINDLE.z1), project(m0, PLATTER.cx, PLATTER.cy, SPINDLE.z1));
+probe.push(project(m0, PLATTER.cx, PLATTER.cy, DISC.z));
+const xs = probe.map((p) => p[0]);
+const ys = probe.map((p) => p[1]);
+const scale = Math.min(
+  (VB[0] - PAD * 2) / (Math.max(...xs) - Math.min(...xs)),
+  (VB[1] - PAD * 2) / (Math.max(...ys) - Math.min(...ys)),
+);
+const cam = {
+  ...angles,
+  scale,
+  x: VB[0] / 2 - ((Math.min(...xs) + Math.max(...xs)) / 2) * scale,
+  y: VB[1] / 2 - ((Math.min(...ys) + Math.max(...ys)) / 2) * scale,
+};
+const m = basis(cam);
+
+const disc = (r: number, cx: number, cy: number, z0: number, z1: number) =>
+  solidPath(m, { cx, cy, z0, z1, bottom: { w: r * 2, h: r * 2, r }, top: { w: r * 2, h: r * 2, r } });
+
+const chassisFace = { w: CHASSIS.w, h: CHASSIS.d, r: CHASSIS.r };
+const topOf = (z: number, cx = 0, cy = 0) => planeTransform(m, z, cx, cy);
+
+// Grooves: a few bands of concentric rings rather than hundreds of circles.
+const grooves = Array.from({ length: 26 }, (_, i) => 140 + i * 6.8);
+const strobe = Array.from({ length: 56 }, (_, i) => (i / 56) * Math.PI * 2);
+
+const feet: [number, number][] = [
+  [-CHASSIS.w / 2 + 90, -CHASSIS.d / 2 + 80],
+  [CHASSIS.w / 2 - 90, -CHASSIS.d / 2 + 80],
+  [-CHASSIS.w / 2 + 90, CHASSIS.d / 2 - 80],
+  [CHASSIS.w / 2 - 90, CHASSIS.d / 2 - 80],
+];
+---
+
+<svg
+  class="deck"
+  viewBox={`0 0 ${VB[0]} ${VB[1]}`}
+  data-deck
+  data-arm-rest={ARM_REST}
+  data-arm-play={ARM_PLAY}
+  role="img"
+  aria-labelledby="deck-title"
+>
+  <title id="deck-title">A turntable. The record on the platter is the one currently selected.</title>
+
+  <defs>
+    <linearGradient id="tt-chassis" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0" stop-color="#c8d2c6"></stop>
+      <stop offset="1" stop-color="#7f8d80"></stop>
+    </linearGradient>
+    <linearGradient id="tt-top" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#eef1ea"></stop>
+      <stop offset="0.55" stop-color="#dde3da"></stop>
+      <stop offset="1" stop-color="#c3ccc1"></stop>
+    </linearGradient>
+    <linearGradient id="tt-platter" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b6bfb6"></stop>
+      <stop offset="1" stop-color="#78857a"></stop>
+    </linearGradient>
+    <radialGradient id="tt-platter-top" cx="0.35" cy="0.3" r="0.85">
+      <stop offset="0" stop-color="#dfe4dc"></stop>
+      <stop offset="1" stop-color="#aab4a9"></stop>
+    </radialGradient>
+    <linearGradient id="tt-vinyl-edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2d2742"></stop>
+      <stop offset="1" stop-color="#140f20"></stop>
+    </linearGradient>
+    <radialGradient id="tt-vinyl" cx="0.34" cy="0.28" r="0.95">
+      <stop offset="0" stop-color="#352e4d"></stop>
+      <stop offset="0.6" stop-color="#1d1730"></stop>
+      <stop offset="1" stop-color="#120d1e"></stop>
+    </radialGradient>
+    <linearGradient id="tt-arm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2f4f3"></stop>
+      <stop offset="0.5" stop-color="#cfd6d2"></stop>
+      <stop offset="1" stop-color="#8e9a93"></stop>
+    </linearGradient>
+    <linearGradient id="tt-metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e7ebe6"></stop>
+      <stop offset="1" stop-color="#9aa69b"></stop>
+    </linearGradient>
+
+    <clipPath id="tt-label-clip"><circle r={LABEL_R - 2}></circle></clipPath>
+  </defs>
+
+  <!-- contact shadow -->
+  <ellipse
+    transform={topOf(FEET_Z, 30, 44)}
+    rx={CHASSIS.w / 2 + 30}
+    ry={CHASSIS.d / 2 + 24}
+    fill="#6f86dc"
+    opacity="0.3"></ellipse>
+
+  <!-- feet + chassis -->
+  {feet.map(([x, y]) => <path d={disc(34, x, y, FEET_Z, 6)} fill="#5f6a61" />)}
+  <path d={solidPath(m, { cx: 0, cy: 0, z0: 0, z1: CHASSIS.z1, bottom: chassisFace, top: chassisFace })} fill="url(#tt-chassis)"></path>
+
+  <g transform={topOf(CHASSIS.z1)}>
+    <rect x={-CHASSIS.w / 2} y={-CHASSIS.d / 2} width={CHASSIS.w} height={CHASSIS.d} rx={CHASSIS.r} fill="url(#tt-top)"></rect>
+    <!-- brushed-metal grain -->
+    <g stroke="#fff" stroke-opacity="0.4" stroke-width="1.5">
+      {Array.from({ length: 22 }, (_, i) => <path d={`M${-CHASSIS.w / 2 + 40} ${-CHASSIS.d / 2 + 50 + i * 36} H${CHASSIS.w / 2 - 40}`} />)}
+    </g>
+    <circle cx={PLATTER.cx} cy={PLATTER.cy} r={PLATTER.r + 26} fill="#aab5a9" opacity="0.5"></circle>
+    <circle cx={PLATTER.cx} cy={PLATTER.cy} r={PLATTER.r + 12} fill="#8d998e" opacity="0.55"></circle>
+    <text class="deck__etch" x={-CHASSIS.w / 2 + 74} y={-CHASSIS.d / 2 + 76}>khushi hi-fi</text>
+  </g>
+
+  <!-- platter -->
+  <path d={disc(PLATTER.r, PLATTER.cx, PLATTER.cy, PLATTER.z0, PLATTER.z1)} fill="url(#tt-platter)"></path>
+  <g transform={topOf(PLATTER.z1, PLATTER.cx, PLATTER.cy)}>
+    <circle r={PLATTER.r} fill="url(#tt-platter-top)"></circle>
+    <circle r={PLATTER.r - 10} fill="none" stroke="#8d998e" stroke-width="3"></circle>
+    <!-- stroboscopic dots -->
+    <g class="deck__strobe" fill="#6f7a70">
+      {strobe.map((a) => <circle cx={Math.cos(a) * (PLATTER.r - 22)} cy={Math.sin(a) * (PLATTER.r - 22)} r="4.2" />)}
+    </g>
+    <g class="deck__mat" fill="none" stroke="#9aa69b" stroke-width="2" opacity="0.7">
+      {[80, 150, 220, 285].map((r) => <circle r={r} />)}
+    </g>
+  </g>
+
+  <!-- the record (hidden until one is chosen) -->
+  <g class="deck__record" data-record hidden>
+    <path data-record-edge d={disc(DISC.r, PLATTER.cx, PLATTER.cy, PLATTER.z1, DISC.z)} fill="url(#tt-vinyl-edge)"></path>
+    <g transform={topOf(DISC.z, PLATTER.cx, PLATTER.cy)}>
+      <g class="deck__spin" data-spin>
+        <circle r={DISC.r} fill="url(#tt-vinyl)"></circle>
+        <g fill="none" stroke="#6b6490" stroke-opacity="0.26" stroke-width="1.4">
+          {grooves.map((r) => <circle r={r} />)}
+        </g>
+        <!-- the glint that makes it obviously spinning -->
+        <path
+          class="deck__glint"
+          d={`M0 0 L${DISC.r} 0 A${DISC.r} ${DISC.r} 0 0 1 ${Math.cos(0.5) * DISC.r} ${Math.sin(0.5) * DISC.r} Z`}
+          fill="#fff"
+          opacity="0.07"></path>
+        <circle r={LABEL_R} data-label fill="#b9a6fb"></circle>
+        <g clip-path="url(#tt-label-clip)">
+          <image data-label-art href="" x={-LABEL_R} y={-LABEL_R} width={LABEL_R * 2} height={LABEL_R * 2} preserveAspectRatio="xMidYMid slice"></image>
+        </g>
+        <circle r={LABEL_R} fill="none" stroke="#120d1e" stroke-opacity="0.35" stroke-width="2"></circle>
+        <text class="deck__label-text" data-label-title y="-10"></text>
+        <text class="deck__label-sub" data-label-artist y="16"></text>
+        <circle r="13" fill="#120d1e"></circle>
+      </g>
+    </g>
+  </g>
+
+  <!-- spindle -->
+  <path d={disc(SPINDLE.r, PLATTER.cx, PLATTER.cy, DISC.z, SPINDLE.z1)} fill="url(#tt-metal)"></path>
+  <ellipse transform={topOf(SPINDLE.z1, PLATTER.cx, PLATTER.cy)} rx={SPINDLE.r} ry={SPINDLE.r} fill="#eef1ea"></ellipse>
+
+  <!-- tonearm -->
+  <path d={disc(64, PIVOT.x, PIVOT.y, CHASSIS.z1, PIVOT.z)} fill="url(#tt-metal)"></path>
+  <ellipse transform={topOf(PIVOT.z, PIVOT.x, PIVOT.y)} rx="64" ry="64" fill="#dfe4dc"></ellipse>
+  <ellipse transform={topOf(PIVOT.z, PIVOT.x, PIVOT.y)} rx="30" ry="30" fill="#aab4a9"></ellipse>
+
+  <g transform={topOf(ARM_Z, PIVOT.x, PIVOT.y)}>
+    <g class="deck__arm" data-arm style={`--angle:${ARM_REST}deg`}>
+      <!-- counterweight end -->
+      <rect x="-146" y="-27" width="100" height="54" rx="27" fill="url(#tt-arm)"></rect>
+      <rect x="-146" y="-27" width="100" height="18" rx="9" fill="#fff" opacity="0.5"></rect>
+      <!-- arm tube -->
+      <rect x="-52" y="-12" width="474" height="24" rx="12" fill="url(#tt-arm)"></rect>
+      <rect x="-52" y="-12" width="474" height="8" rx="4" fill="#fff" opacity="0.45"></rect>
+      <!-- headshell + stylus -->
+      <path d="M408 -28 L470 -24 L486 14 L436 28 L408 26 Z" fill="#e9ede8"></path>
+      <path d="M408 -28 L470 -24 L472 -12 L408 -16 Z" fill="#fff" opacity="0.5"></path>
+      <path d="M470 12 L492 30 L484 38 L462 22 Z" fill="#3b3550"></path>
+      <circle cx="492" cy="34" r="7" fill="#ff6a3d"></circle>
+    </g>
+  </g>
+
+  <!-- arm rest -->
+  <path d={disc(28, REST_POST[0], REST_POST[1], CHASSIS.z1, CHASSIS.z1 + 44)} fill="#8d998e"></path>
+  <ellipse transform={topOf(CHASSIS.z1 + 44, REST_POST[0], REST_POST[1])} rx="28" ry="28" fill="#b9c2b6"></ellipse>
+
+  <!-- start / stop -->
+  <path d={disc(54, 240, 320, CHASSIS.z1, CHASSIS.z1 + 26)} fill="#d14a24"></path>
+  <g class="deck__power" data-power transform={topOf(CHASSIS.z1 + 26, 240, 320)} role="button" tabindex="0" aria-pressed="false">
+    <circle r="54" fill="#ff6a3d"></circle>
+    <circle r="54" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="4"></circle>
+    <circle class="deck__power-dot" r="15" fill="#fff8ec"></circle>
+    <text class="deck__btn-label" y="88">start / stop</text>
+  </g>
+
+  <!-- pitch fader -->
+  <g transform={topOf(CHASSIS.z1, 516, 56)}>
+    <rect x="-28" y="-128" width="56" height="256" rx="20" fill="#8d998e"></rect>
+    <rect x="-6" y="-104" width="12" height="208" rx="6" fill="#4f5a51"></rect>
+    {
+      [-104, -52, 0, 52, 104].map((y) => (
+        <g stroke="#e9ede8" stroke-width="3" stroke-linecap="round">
+          <path d={`M-24 ${y} H-12`} />
+          <path d={`M12 ${y} H24`} />
+        </g>
+      ))
+    }
+  </g>
+  <g
+    class="deck__pitch"
+    data-pitch
+    transform={topOf(CHASSIS.z1 + 18, 516, 56)}
+    role="slider"
+    tabindex="0"
+    aria-label="Pitch: how fast the platter turns"
+    aria-valuemin="-8"
+    aria-valuemax="8"
+    aria-valuenow="0"
+    aria-valuetext="0 percent"
+  >
+    <g data-pitch-thumb>
+      <rect x="-44" y="-24" width="88" height="48" rx="14" fill="url(#tt-metal)"></rect>
+      <rect x="-44" y="-24" width="88" height="16" rx="8" fill="#fff" opacity="0.55"></rect>
+      <rect x="-30" y="-3" width="60" height="6" rx="3" fill="#d14a24"></rect>
+    </g>
+  </g>
+</svg>
+
+<style>
+  .deck__record[hidden] {
+    display: none;
+  }
+
+  .deck__arm {
+    cursor: pointer;
+  }
+
+  .deck__pitch:focus-visible rect:first-child {
+    stroke: var(--ink);
+    stroke-width: 5px;
+  }
+
+  .deck {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .deck__etch {
+    fill: #7f8d80;
+    font-family: var(--font-pixel);
+    font-size: 26px;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+  }
+
+  .deck__label-text,
+  .deck__label-sub {
+    fill: #1b1526;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  .deck__label-text {
+    font-family: var(--font-display);
+    font-size: 34px;
+  }
+
+  .deck__label-sub {
+    font-family: var(--font-pixel);
+    font-size: 15px;
+  }
+
+  .deck__arm {
+    transform: rotate(var(--angle));
+    transition: transform 1.1s cubic-bezier(0.33, 0.02, 0.2, 1);
+  }
+
+  .deck__power {
+    cursor: pointer;
+  }
+
+  .deck__power-dot {
+    fill: #fff8ec;
+    transition: fill 0.3s ease;
+  }
+
+  .deck__power[aria-pressed='true'] .deck__power-dot {
+    fill: #7fe0b0;
+  }
+
+  .deck__power:focus-visible circle:first-child {
+    stroke: var(--ink);
+    stroke-width: 6px;
+  }
+
+  .deck__btn-label {
+    fill: #5d6a5f;
+    font-family: var(--font-pixel);
+    font-size: 19px;
+    text-anchor: middle;
+  }
+
+  .deck__pitch {
+    cursor: ns-resize;
+    touch-action: none;
+  }
+
+  .deck__glint {
+    mix-blend-mode: screen;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck__arm {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>

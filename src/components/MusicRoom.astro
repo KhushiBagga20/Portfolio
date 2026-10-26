@@ -1,0 +1,643 @@
+---
+import { getImage } from 'astro:assets';
+import Sleeve from './Sleeve.astro';
+import Turntable from './Turntable.astro';
+import { deckLabel, records, roomNote } from '../data/music';
+
+// What the browser needs: the same records, minus the build-time image objects.
+const payload = await Promise.all(
+  records.map(async ({ cover, todo, ...rest }) => ({
+    ...rest,
+    cover: cover ? (await getImage({ src: cover, width: 440, height: 440, fit: 'cover' })).src : undefined,
+  })),
+);
+
+const tilts = [-2.4, 1.8, -1.2, 2.6, -2, 1.3, -2.8];
+const shifts = [0, 16, -10, 22, -6, 12, -18];
+---
+
+<section class="room" data-room data-records={JSON.stringify(payload)} aria-labelledby="room-title">
+  <div class="room__head">
+    <p class="eyebrow">music.room</p>
+    <h1 id="room-title">my records</h1>
+    <p class="room__note">{roomNote}</p>
+  </div>
+
+  <div class="room__body">
+    <!-- ── the collection ───────────────────── -->
+    <div class="shelf">
+      <h2 class="shelf__title" id="shelf-title">the collection</h2>
+      <p class="shelf__hint">pick one up and put it on</p>
+      <ul class="stack" aria-labelledby="shelf-title">
+        {
+          records.map((r, i) => (
+            <li class="stack__item" style={`--r:${tilts[i % tilts.length]}deg;--x:${shifts[i % shifts.length]}px;--i:${i}`}>
+              <button class="pick" type="button" data-pick={r.id} aria-pressed="false">
+                <span class="sr-only">Put on </span>
+                <span class="pick__disc" aria-hidden="true" style={`--label:${r.sleeve.label}`} />
+                <Sleeve record={r} />
+                <span class="pick__meta">
+                  <span class="pick__title">{r.title || 'untitled'}</span>
+                  <span class="pick__artist">{r.artist}</span>
+                </span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <!-- ── the deck ─────────────────────────── -->
+    <div class="deck-area">
+      <div class="deck-area__table">
+        <Turntable />
+      </div>
+
+      <p class="deck-area__label">{deckLabel}</p>
+
+      <div class="panel" role="group" aria-label="Turntable controls">
+        <button class="panel__btn" type="button" data-prev aria-label="Previous record">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14L8 12zM6 5h2.4v14H6z" /></svg>
+        </button>
+        <button class="panel__btn panel__btn--main" type="button" data-toggle aria-pressed="false">
+          <svg class="panel__play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5 20 12 7 19.5z" /></svg>
+          <svg class="panel__stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg>
+          <span class="sr-only" data-toggle-label>Start the turntable</span>
+        </button>
+        <button class="panel__btn" type="button" data-next aria-label="Next record">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14l10-7zM15.6 5H18v14h-2.4z" /></svg>
+        </button>
+        <button class="panel__btn" type="button" data-shuffle aria-label="Shuffle">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M3 7h3.5l3 5M3 17h3.5l3-5M21 7h-4m4 0-2.5-2.5M21 7l-2.5 2.5M21 17h-4m4 0-2.5-2.5M21 17l-2.5 2.5M13.5 7H17M13.5 17H17"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+        <div class="panel__rpm" role="group" aria-label="Speed">
+          <button class="rpm" type="button" data-rpm="33" aria-pressed="true">33⅓</button>
+          <button class="rpm" type="button" data-rpm="45" aria-pressed="false">45</button>
+        </div>
+      </div>
+
+      <!-- ── what's on ─────────────────────── -->
+      <div class="now" data-now>
+        <p class="now__empty" data-now-empty>nothing on the platter yet — pick a record.</p>
+        <div class="now__card" data-now-card hidden>
+          <p class="now__line">
+            <strong data-now-title></strong>
+            <span data-now-artist></span>
+            <span class="now__album" data-now-album hidden></span>
+          </p>
+          <p class="now__meta" data-now-meta hidden></p>
+          <ul class="now__moods" data-now-moods hidden></ul>
+          <details class="now__why" data-now-why hidden>
+            <summary>why I love this one</summary>
+            <p data-now-note></p>
+          </details>
+          <div class="now__links" data-now-links hidden></div>
+          <p class="now__soon" data-now-soon hidden>
+            <span aria-hidden="true">✎</span> details coming soon
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- the record in transit, between sleeve and platter -->
+  <div class="flier" data-flier aria-hidden="true">
+    <span class="flier__disc" data-flier-disc></span>
+  </div>
+</section>
+
+<script>
+  import { initMusicRoom } from '../scripts/turntable';
+  document.querySelectorAll<HTMLElement>('[data-room]').forEach(initMusicRoom);
+</script>
+
+<style>
+  .room {
+    padding: 104px var(--gutter) clamp(72px, 10vw, 120px);
+  }
+
+  .room__head {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    margin: 0;
+    font: 400 11px/1 var(--font-pixel);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 12px 0 0;
+    color: var(--lemon);
+    font: 400 clamp(46px, 6vw, 92px) / 0.92 var(--font-display);
+    -webkit-text-stroke: 0.07em var(--ink);
+    paint-order: stroke fill;
+    text-shadow:
+      0.035em 0.045em 0 var(--ink),
+      0.065em 0.08em 0 var(--tomato);
+  }
+
+  .room__note {
+    max-width: 34ch;
+    margin: 14px 0 0;
+    font: 400 clamp(22px, 2vw, 28px) / 1.15 var(--font-hand);
+    rotate: -1.5deg;
+  }
+
+  .room__body {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.52fr) minmax(0, 1.48fr);
+    align-items: start;
+    gap: clamp(28px, 5vw, 72px);
+    max-width: 1240px;
+    margin: clamp(36px, 5vw, 64px) auto 0;
+  }
+
+  /* ── collection ──────────────────────── */
+  .shelf__title {
+    margin: 0;
+    font: 400 clamp(24px, 2.2vw, 32px) / 1 var(--font-display);
+  }
+
+  .shelf__hint {
+    margin: 6px 0 0;
+    color: var(--text-soft);
+    font: 400 20px/1.2 var(--font-hand);
+  }
+
+  .stack {
+    max-width: 268px;
+    margin: 26px 0 0;
+    padding: 0 0 32px;
+    list-style: none;
+  }
+
+  .stack__item {
+    position: relative;
+    z-index: 2;
+  }
+
+  .stack__item + .stack__item {
+    margin-top: -32%;
+  }
+
+  .pick {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    rotate: var(--r);
+    translate: var(--x) 0;
+    transition:
+      translate 0.4s var(--ease-out),
+      rotate 0.4s var(--ease-out),
+      filter 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (hover: hover) {
+    .stack:hover .pick {
+      filter: saturate(0.85) brightness(0.96);
+    }
+
+    .stack__item:hover .pick,
+    .pick:focus-visible {
+      translate: calc(var(--x) + 10px) -14px;
+      rotate: calc(var(--r) * 0.3);
+      filter: none;
+      z-index: 3;
+    }
+
+    /* neighbours ease out of the way */
+    .stack__item:hover + .stack__item .pick {
+      translate: var(--x) 12px;
+    }
+  }
+
+  .pick[aria-pressed='true'] {
+    translate: calc(var(--x) + 16px) -10px;
+    rotate: 0deg;
+  }
+
+  .pick:focus-visible {
+    outline: 3px dashed var(--purple);
+    outline-offset: 6px;
+  }
+
+  /* the record peeking out of the sleeve */
+  .pick__disc {
+    position: absolute;
+    top: 6%;
+    right: -6%;
+    width: 88%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, var(--label) 0 17%, transparent 17%),
+      repeating-radial-gradient(circle, #241d3a 0 2px, #171226 2px 4px);
+    box-shadow: 2px 3px 8px rgb(27 21 38 / 0.4);
+    transition: right 0.45s var(--spring);
+  }
+
+  @media (hover: hover) {
+    .stack__item:hover .pick__disc {
+      right: -14%;
+    }
+  }
+
+  /* The title only surfaces when you reach for the sleeve, so the pile stays a pile. */
+  .pick__meta {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+    opacity: 0;
+    translate: 0 -6px;
+    transition:
+      opacity 0.25s ease,
+      translate 0.25s var(--ease-out);
+  }
+
+  .stack__item:hover .pick__meta,
+  .pick:focus-visible .pick__meta,
+  .pick[aria-pressed='true'] .pick__meta {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .pick__title {
+    font: 400 22px/1 var(--font-display);
+    color: var(--ink);
+  }
+
+  .pick__artist {
+    color: var(--text-soft);
+    font: 400 10px/1.3 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  /* ── deck ────────────────────────────── */
+  .deck-area__table {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .deck-area__label {
+    margin: 4px 0 0;
+    font: 400 24px/1 var(--font-hand);
+    text-align: center;
+  }
+
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: max-content;
+    max-width: 100%;
+    margin: 16px auto 0;
+    padding: 14px 18px;
+    border-radius: 26px;
+    background: linear-gradient(#e7ebe4, #c4ccc1);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.8) inset,
+      0 8px 0 #8d998e,
+      0 14px 22px -10px rgb(27 21 38 / 0.55);
+  }
+
+  .panel__btn {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(#fdfdfb, #dfe4dc);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.9) inset,
+      0 4px 0 #9aa69b;
+    color: #3f4a42;
+    cursor: pointer;
+    transition:
+      translate 0.12s ease,
+      box-shadow 0.12s ease;
+  }
+
+  .panel__btn svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+  }
+
+  .panel__btn:hover {
+    background: linear-gradient(#fff, #e9eee6);
+  }
+
+  .panel__btn:active {
+    translate: 0 4px;
+    box-shadow: 0 0 0 #9aa69b;
+  }
+
+  .panel__btn--main {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(#ff8a63, #ef5f33);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.45) inset,
+      0 5px 0 #b8421c;
+    color: #fff8ec;
+  }
+
+  .panel__btn--main:hover {
+    background: linear-gradient(#ff9b78, #ff6a3d);
+  }
+
+  .panel__btn--main svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .panel__stop {
+    display: none;
+  }
+
+  .panel__btn--main[aria-pressed='true'] .panel__play {
+    display: none;
+  }
+
+  .panel__btn--main[aria-pressed='true'] .panel__stop {
+    display: block;
+  }
+
+  .panel__rpm {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 14px;
+    background: #8d998e;
+  }
+
+  .rpm {
+    min-width: 46px;
+    padding: 7px 8px 6px;
+    border: 0;
+    border-radius: 10px;
+    background: #e7ebe4;
+    color: #4f5a51;
+    font: 400 11px/1 var(--font-pixel);
+    cursor: pointer;
+  }
+
+  .rpm[aria-pressed='true'] {
+    background: var(--lemon);
+    color: var(--ink);
+  }
+
+  /* ── now playing ─────────────────────── */
+  .now {
+    max-width: 560px;
+    margin: 26px auto 0;
+    text-align: center;
+  }
+
+  .now__empty {
+    margin: 0;
+    color: var(--text-soft);
+    font: 400 22px/1.2 var(--font-hand);
+  }
+
+  .now__card {
+    padding: 20px 22px;
+    border: var(--line) solid var(--ink);
+    border-radius: 18px;
+    background: var(--cream);
+    box-shadow: 7px 8px 0 var(--ink);
+  }
+
+  .now__line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px 10px;
+    margin: 0;
+  }
+
+  .now__line strong {
+    font: 400 30px/1 var(--font-display);
+    font-weight: 400;
+  }
+
+  .now__line span {
+    color: var(--text-soft);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .now__album::before {
+    content: '· ';
+  }
+
+  .now__meta {
+    margin: 8px 0 0;
+    font: 400 10px/1.4 var(--font-pixel);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .now__moods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .now__moods li {
+    padding: 5px 8px 4px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--lilac);
+    font: 400 10px/1 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  .now__why {
+    margin-top: 14px;
+    text-align: left;
+  }
+
+  .now__why summary {
+    font: 400 20px/1.2 var(--font-hand);
+    cursor: pointer;
+  }
+
+  .now__why p {
+    margin: 8px 0 0;
+    color: var(--text-soft);
+  }
+
+  .now__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .now__soon {
+    display: inline-block;
+    margin: 14px 0 0;
+    padding: 6px 10px 5px;
+    border: 2px dashed var(--ink);
+    border-radius: 8px;
+    font: 400 10px/1.2 var(--font-pixel);
+    text-transform: uppercase;
+  }
+
+  /* ── the record in transit ───────────── */
+  .flier {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .flier.is-flying {
+    z-index: 60;
+  }
+
+  .flier.is-on {
+    visibility: visible;
+  }
+
+  .flier__disc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, #120d1e 0 3.6%, var(--label, #b9a6fb) 3.6% 31%, transparent 31%),
+      repeating-radial-gradient(circle, #2d2742 0 2px, #171226 2px 4.4px);
+    box-shadow: 0 18px 26px -14px rgb(27 21 38 / 0.7);
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  /* ── phones & small tablets ──────────── */
+  @media (max-width: 899px) {
+    .room {
+      padding-top: 88px;
+    }
+
+    .room__body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 32px;
+    }
+
+    /* deck → controls → the records → what's on. */
+    .deck-area {
+      display: contents;
+    }
+
+    .deck-area__table {
+      order: 1;
+    }
+
+    .deck-area__label {
+      order: 2;
+    }
+
+    .panel {
+      order: 3;
+      margin-top: 4px;
+    }
+
+    .shelf {
+      order: 4;
+    }
+
+    .now {
+      order: 5;
+      margin-top: 4px;
+    }
+
+    .shelf__hint {
+      margin-bottom: 4px;
+    }
+
+    /* a row you can swipe instead of a pile */
+    .stack {
+      display: flex;
+      gap: 14px;
+      margin-top: 16px;
+      padding: 10px 2px 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .stack__item {
+      flex: 0 0 min(58vw, 240px);
+      scroll-snap-align: center;
+    }
+
+    .stack__item + .stack__item {
+      margin-top: 0;
+    }
+
+    .pick {
+      rotate: 0deg;
+      translate: 0 0;
+    }
+
+    .pick[aria-pressed='true'] {
+      translate: 0 -8px;
+    }
+
+    .pick__disc {
+      right: -5%;
+      width: 76%;
+    }
+
+    .pick__meta {
+      position: static;
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pick,
+    .pick__disc {
+      transition: none;
+    }
+  }
+</style>

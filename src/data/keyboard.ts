@@ -9,7 +9,7 @@ import { KEY } from '../scripts/keycap';
 
 const KEY_PLATE = KEY.plate;
 
-export type Tone = 'base' | 'lemon' | 'tomato' | 'lilac' | 'mint' | 'pink' | 'cream';
+export type Tone = 'base' | 'lemon' | 'tomato' | 'lilac' | 'mint' | 'pink' | 'cream' | 'sky';
 
 export const sections: { key: string; label: string; href: string; tone: Tone }[] = [
   { key: 'A', label: 'about', href: '#about', tone: 'lemon' },
@@ -18,6 +18,7 @@ export const sections: { key: string; label: string; href: string; tone: Tone }[
   { key: 'M', label: 'milestones', href: '#milestones', tone: 'mint' },
   { key: 'E', label: 'experience', href: '#experience', tone: 'pink' },
   { key: 'C', label: 'contact', href: '#contact', tone: 'cream' },
+  { key: 'V', label: 'records', href: '/music/', tone: 'sky' },
 ];
 
 // Top face, light side, dark side, legend.
@@ -29,6 +30,7 @@ export const tones: Record<Tone, [string, string, string, string]> = {
   mint: ['#9eedc9', '#63d3a0', '#34ad78', '#1b1526'],
   pink: ['#ffadd0', '#ff7eb3', '#e0528f', '#1b1526'],
   cream: ['#fffaf0', '#f1dfc3', '#d2b98f', '#1b1526'],
+  sky: ['#a9ccff', '#7fabf4', '#5a85d8', '#1b1526'],
 };
 
 export type KeyDef = {
@@ -94,7 +96,7 @@ export const desk: Scene = {
 const padKeys = [
   ...row(0, [['G', 1], ['A', 1], ['P', 1]]),
   ...row(1, [['S', 1], ['M', 1], ['E', 1]]),
-  ...row(2, [['C', 1], ['✦', 1, 'SPARKLE'], ['?', 1, 'HELP']]),
+  ...row(2, [['C', 1], ['V', 1], ['✦', 1, 'SPARKLE']]),
 ].map((k) => (k.id === 'G' ? { ...k, hole: true } : k));
 
 export const pad: Scene = {

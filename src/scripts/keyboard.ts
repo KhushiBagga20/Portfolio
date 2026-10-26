@@ -138,6 +138,11 @@ export function initKeyboard(svg: SVGSVGElement) {
 
   // ── Navigation ─────────────────────────────
   const go = (href: string) => {
+    if (!href.startsWith('#')) {
+      // a real page: let the key finish springing back before we leave
+      window.setTimeout(() => (location.href = href), 170);
+      return;
+    }
     const target = document.querySelector<HTMLElement>(href);
     window.setTimeout(() => {
       if (!target) return void (location.hash = href);

@@ -83,6 +83,25 @@ cross-document view transitions, the floppy disk flies from the grid into the di
 - **Reduced motion**: the collage doesn't play on scroll; "drawn / real / both" buttons switch it instead.
 - **Contact** links and the résumé live in `src/data/site.ts` and `public/`.
 
+## 5. The record room (`/music/`)
+
+A turntable you can actually use. Same 2.5D engine as the keyboard, so the deck belongs to
+the same world — brushed-metal chassis, stroboscopic dots, grooves, a real tonearm.
+
+- **Pick a sleeve** and the record slides out, flies across the room, lands on the platter,
+  the arm swings over and the platter winds up to speed. Picking another reverses it first.
+- **Controls:** start/stop (on the deck or the panel), previous, next, shuffle, 33⅓ / 45,
+  and a draggable pitch fader (arrow keys work too). The strobe ring only drifts when the
+  pitch is off zero, like the real thing.
+- **No audio ships with the site** — those would be someone else's recordings. The deck
+  spins for real and never pretends to be playing sound; `listen` links out instead.
+- **Reduced motion:** no flight and no spinning; the record simply appears on the platter.
+- **Phones:** deck first, then controls, then a swipeable row of sleeves.
+
+Add records in `src/data/music.ts`. Anything you leave out is left out — nothing is invented.
+Covers go in `src/assets/covers/`, imported and set as `cover`; until then each sleeve is
+typeset from the artist and title.
+
 ## Where things live
 
 | What | File |
@@ -98,6 +117,10 @@ cross-document view transitions, the floppy disk flies from the grid into the di
 | Keyboard drawing | `src/components/KeyboardScene.astro`, `src/components/Garden.astro` |
 | Sections | `About`, `Projects` (+ archive), `Milestones`, `Communities`, `Skills`, `Contact` in `src/components/` |
 | Shared bits | `SectionHead`, `Badge`, `ComingSoon`, `FloppyDisk` in `src/components/` |
+| Record collection | `src/data/music.ts` |
+| Record room | `src/pages/music.astro`, `src/components/MusicRoom.astro` |
+| Deck + sleeves | `src/components/Turntable.astro`, `src/components/Sleeve.astro` |
+| Deck state machine + choreography | `src/scripts/turntable.ts` |
 | Colors, type, keycap buttons, section spacing | `src/styles/global.css` |
 
 ## Next up
